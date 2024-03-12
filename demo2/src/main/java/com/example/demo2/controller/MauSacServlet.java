@@ -1,4 +1,4 @@
-package controller;
+package com.example.demo2.controller;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -23,6 +23,7 @@ public class MauSacServlet extends HttpServlet {
         System.out.println("Mã: " + req.getParameter("colorCode"));
         System.out.println("Tên: " + req.getParameter("colorName"));
         boolean trangThai = Objects.equals(req.getParameter("colorStatus"), "enable");
-        System.out.println("Trạng thái: " + ((trangThai)?"Hoạt động":"Không hoạt động"));
+        System.out.println("Trang Thai: " + ((trangThai)?"Enable":"Disnable"));
+        req.getRequestDispatcher("/views/mau-sac/create.jsp").forward(req, resp);
     }
 }
