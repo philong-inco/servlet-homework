@@ -12,12 +12,12 @@ public class SanPhamChiTiet {
     private BigDecimal donGia;
     private Integer trangThai;
 
-    public SanPhamChiTietBuilder getBuilder() {
+    public static SanPhamChiTietBuilder getBuilder() {
         return new SanPhamChiTietBuilder();
     }
 
     public static class SanPhamChiTietBuilder {
-        private SanPhamChiTiet sanPhamChiTiet;
+        private SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
 
         public SanPhamChiTietBuilder withId(Long id) {
             this.sanPhamChiTiet.id = id;

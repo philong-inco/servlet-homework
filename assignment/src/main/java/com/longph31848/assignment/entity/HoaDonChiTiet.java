@@ -11,12 +11,12 @@ public class HoaDonChiTiet {
     private BigDecimal donGia;
     private Integer trangThai;
 
-    public HoaDonChiTietBuilder getBuilder() {
+    public static HoaDonChiTietBuilder getBuilder() {
         return new HoaDonChiTietBuilder();
     }
 
     public static class HoaDonChiTietBuilder {
-        private HoaDonChiTiet hoaDonChiTiet;
+        private HoaDonChiTiet hoaDonChiTiet = new HoaDonChiTiet();
 
         public HoaDonChiTietBuilder withId(Long id) {
             this.hoaDonChiTiet.id = id;

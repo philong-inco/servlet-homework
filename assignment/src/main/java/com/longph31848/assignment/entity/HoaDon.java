@@ -6,15 +6,15 @@ public class HoaDon {
     private Long id;
     private Long idNhanVien;
     private Long idKhachHang;
-    private LocalDate ngayMuaHang;
+    private Long ngayMuaHang;
     private Integer trangThai;
 
-    public HoaDonBuilder getBuilder() {
+    public static HoaDonBuilder getBuilder() {
         return new HoaDonBuilder();
     }
 
     public static class HoaDonBuilder {
-        private HoaDon hoaDon;
+        private HoaDon hoaDon = new HoaDon();
 
         public HoaDonBuilder withId(Long id) {
             this.hoaDon.id = id;
@@ -31,7 +31,7 @@ public class HoaDon {
             return this;
         }
 
-        public HoaDonBuilder withNgayMuaHang(LocalDate data) {
+        public HoaDonBuilder withNgayMuaHang(Long data) {
             this.hoaDon.ngayMuaHang = data;
             return this;
         }
@@ -70,11 +70,11 @@ public class HoaDon {
         this.idKhachHang = idKhachHang;
     }
 
-    public LocalDate getNgayMuaHang() {
+    public Long getNgayMuaHang() {
         return ngayMuaHang;
     }
 
-    public void setNgayMuaHang(LocalDate ngayMuaHang) {
+    public void setNgayMuaHang(Long ngayMuaHang) {
         this.ngayMuaHang = ngayMuaHang;
     }
 

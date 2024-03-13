@@ -6,12 +6,12 @@ public class KichThuoc {
     private String ten;
     private Integer trangThai;
 
-    public KichThuocBuilder getBuilder() {
+    public static KichThuocBuilder getBuilder() {
         return new KichThuocBuilder();
     }
 
     public static class KichThuocBuilder {
-        private KichThuoc kichThuoc;
+        private KichThuoc kichThuoc = new KichThuoc();
 
         public KichThuocBuilder withId(Long id) {
             this.kichThuoc.id = id;

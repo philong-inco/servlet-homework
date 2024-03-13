@@ -6,12 +6,12 @@ public class SanPham {
     private String ten;
     private Integer trangThai;
 
-    public SanPhamBuilder getBuilder(){
+    public static SanPhamBuilder getBuilder(){
         return new SanPhamBuilder();
     }
 
     public static class SanPhamBuilder {
-        private SanPham sanPham;
+        private SanPham sanPham = new SanPham();
 
         public SanPhamBuilder withId(Long id) {
             this.sanPham.id = id;

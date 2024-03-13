@@ -7,12 +7,12 @@ public class KhachHang {
     private String maKH;
     private Integer trangThai;
 
-    public KhachHangBuilder getBuilder(){
+    public static KhachHangBuilder getBuilder(){
         return new KhachHangBuilder();
     }
 
     public static class KhachHangBuilder {
-        private KhachHang khachHang;
+        private KhachHang khachHang = new KhachHang();
 
         public KhachHangBuilder withId(Long id) {
             this.khachHang.id = id;

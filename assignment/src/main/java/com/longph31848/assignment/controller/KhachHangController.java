@@ -1,9 +1,9 @@
 package com.longph31848.assignment.controller;
 
 import com.longph31848.assignment.db.DataBaseConnection;
-import com.longph31848.assignment.entity.KichThuoc;
-import com.longph31848.assignment.repository.KichThuocService;
-import com.longph31848.assignment.repository.impl.KichThuocServiceImpl;
+import com.longph31848.assignment.entity.KhachHang;
+import com.longph31848.assignment.repository.KhachHangService;
+import com.longph31848.assignment.repository.impl.KhachHangServiceImpl;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,18 +14,18 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-@WebServlet("/kich-thuoc")
-public class KichThuocController extends HttpServlet {
+@WebServlet("/khach-hang")
+public class KhachHangController extends HttpServlet {
 
     private Connection connection;
-    private KichThuocService service;
-    private List<KichThuoc> list;
+    private KhachHangService service;
+    private List<KhachHang> list;
 
     @Override
     public void init() {
         try {
             connection = DataBaseConnection.getConnection();
-            service = new KichThuocServiceImpl();
+            service = new KhachHangServiceImpl();
             list = service.getAll();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -34,8 +34,8 @@ public class KichThuocController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("kichthuoclist", list);
-        req.getRequestDispatcher("/views/kichthuoc/kichthuoc.jsp").forward(req, resp);
+        req.setAttribute("khachhanglist", list);
+        req.getRequestDispatcher("/views/khachhang/khachhang.jsp").forward(req, resp);
     }
 
     @Override

@@ -6,12 +6,12 @@ public class MauSac {
     private String ten;
     private Integer trangThai;
 
-    public MauSacBuilder getBuilder() {
+    public static MauSacBuilder getBuilder() {
         return new MauSacBuilder();
     }
 
     public static class MauSacBuilder {
-       private MauSac mauSac;
+       private MauSac mauSac = new MauSac();
 
         public MauSacBuilder withId(Long id) {
             this.mauSac.id = id;

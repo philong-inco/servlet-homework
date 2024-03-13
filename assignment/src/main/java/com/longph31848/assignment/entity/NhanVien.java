@@ -9,12 +9,12 @@ public class NhanVien {
     private String matKhau;
     private Integer trangThai;
 
-    public NhanVienBuilder getBuilder() {
+    public static NhanVienBuilder getBuilder() {
         return new NhanVienBuilder();
     }
 
     public static class NhanVienBuilder {
-        private NhanVien nhanVien;
+        private NhanVien nhanVien = new NhanVien();
 
         public NhanVienBuilder withId(Long id) {
             this.nhanVien.id = id;
