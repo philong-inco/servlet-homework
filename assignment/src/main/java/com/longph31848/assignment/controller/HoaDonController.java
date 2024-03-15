@@ -17,12 +17,22 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
 
-@WebServlet("/hoa-don")
+@WebServlet({
+        "/hoa-don/list",
+        "/hoa-don/create",
+        "/hoa-don/edit",
+        "/hoa-don/detail",
+        "/hoa-don/store",
+        "/hoa-don/delete",
+        "/hoa-don/update",
+})
 public class HoaDonController extends HttpServlet {
 
     private Connection connection;
     private HoaDonService service;
     private List<HoaDon> list;
+
+
 
     @Override
     public void init() {
@@ -38,11 +48,54 @@ public class HoaDonController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setAttribute("hoadonlist", list);
-        req.getRequestDispatcher("/views/hoadon/hoadon.jsp").forward(req, resp);
+        req.getRequestDispatcher("/views/hoadon/list.jsp").forward(req, resp);
+
+        String uri = req.getRequestURI();
+        if (uri.contains("create")) {
+            this.create(req, resp);
+        } else if (uri.contains("edit")) {
+            this.edit(req, resp);
+        } else if (uri.contains("detail")) {
+            this.detail(req, resp);
+        } else if (uri.contains("update")) {
+            this.update(req, resp);
+        } else if (uri.contains("edit")) {
+            this.edit(req, resp);
+        } else if (uri.contains("store")) {
+            this.store(req, resp);
+        } else {
+            this.list(req, resp);
+        }
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String uri = req.getRequestURI();
+        if (uri.contains("update")) {
+            this.update(req, resp);
+        } else if (uri.contains("store")) {
+            this.store(req, resp);
+        }
+    }
+    public void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+    public void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+    public void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+    public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+    public void detail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+    public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+    }
+    public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
 }

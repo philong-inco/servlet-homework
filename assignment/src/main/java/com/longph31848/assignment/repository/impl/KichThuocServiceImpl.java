@@ -70,7 +70,6 @@ public class KichThuocServiceImpl implements KichThuocService {
 
     @Override
     public KichThuoc findByMa(String ma) throws SQLException {
-
         String query = "SELECT * FROM kich_thuoc WHERE 1=1 AND "
                 + RenderQuery.render("ma", ma);
 
