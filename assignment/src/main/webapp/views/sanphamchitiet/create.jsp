@@ -1,16 +1,131 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: longnvph31848
-  Date: 15/03/2024
-  Time: 04:05 CH
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@taglib uri="jakarta.tags.core" prefix="c" %>
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+<div>
+    <!-- Header -->
+    <div class="bg-danger container-fluid position-sticky top-0">
+        <div class="container d-flex py-3">
+            <!-- Logo -->
+            <div class="w-25 text-light h3">
+                WEB SERVLET
+            </div>
+            <!-- Search -->
+            <div class="w-75">
+                <form action="" class="d-flex mx-5">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Tìm sản phẩm...">
+                    <button class="btn btn-dark">Tìm</button>
+                </form>
+            </div>
+            <!-- Admin -->
+            <div class="w-25 d-flex justify-content-end">
+                <a href="#" class="text-decoration-none text-light d-inline-block mt-2 me-5">Admin</a>
+                <a href="#" class="text-decoration-none text-light d-inline-block mt-2">Giỏ hàng</a>
+            </div>
+        </div>
+        <!-- Navbar -->
+        <div>
+
+        </div>
+    </div>
+
+    <!-- Body -->
+    <div class="d-flex container" style="min-height: 450px;">
+        <div class="w-25 mt-3 ">
+            <div class="border-1 me-5 rounded shadow position-sticky" style="top: 80px;">
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="w-75  mt-3">
+            <div class="d-flex justify-content-between mb-3">
+                <h1 class="my-2 h4 d-inline-block">Thêm mới biến thể</h1>
+                <a href="/assignment_war_exploded/san-pham/list" class="btn btn-secondary m-1">Danh sách sản phẩm</a>
+            </div>
+            <div>
+                <form method="POST" action="/assignment_war_exploded/san-pham-chi-tiet/store">
+                    <div class="mt-3">
+                        <label class="form-label">Tên sản phẩm: <span class="text-danger">${sp.ten}</span></label>
+                        <input class="form-control" type="hidden" name="idSP" value="${sp.id}">
+                    </div>
+                    <h2 class="h4">Vui lòng điền đủ thông tin các trường</h2>
+
+                    <form action="" method="POST">
+                        <c:forEach items="${listrender}" var="o" varStatus="loop">
+                            <div class="border shadow my-3 p-1 d-flex">
+                                <div class="w-25 pb-2">
+                                    <div class="bg-warning">
+                                        <label>Màu: ${o.mauSac}</label>
+                                    </div>
+                                    <div class="bg-primary">
+                                        <label>Kích thước: ${o.kichThuoc}</label>
+                                    </div>
+                                    <input type="hidden" name="idMauSac_${loop.index}" value="${o.idMauSac}">
+                                    <input type="hidden" name="idKichThuoc_${loop.index}" value="${o.idKichThuoc}">
+                                </div>
+                                <div class="w-75 d-flex align-items-center">
+                                    <div style="width: 30%" class="p-2 mx-1">
+                                        <label>Đơn giá</label>
+                                        <input type="text" name="donGia_${loop.index}" value="${o.donGia}">
+                                    </div>
+                                    <div style="width: 30%" class="p-2 mx-1">
+                                        <label>Số lượng</label>
+                                        <input type="text" name="soLuong_${loop.index}" value="${o.soLuong}">
+                                    </div>
+                                    <div style="width: 30%" class="p-2 mx-1">
+                                        <label>Trạng thái</label>
+                                        <select name="trangThai_${loop.index}">
+                                            <option ${(o.trangThai == 1)?"selected":""} value="1">Hoạt động</option>
+                                            <option ${(o.trangThai == 0)?"selected":""} value="0">Không hoạt động</option>
+                                        </select>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </c:forEach>
+                        <div class="mt-3 text-center">
+                            <button class="btn btn-success">Hoàn thành</button>
+                        </div>
+                    </form>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-dark py-3 text-center mt-3">
+        <span class="text-light my-2">longnvph31848 - Nguyễn Vĩnh Long</span>
+    </div>
+</div>
 </body>
+
 </html>

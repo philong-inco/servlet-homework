@@ -101,7 +101,22 @@
                         <td>${ kh.maKH }</td>
                         <td>${ kh.ten }</td>
                         <td>${ kh.sdt }</td>
-                        <td>${ (kh.trangThai == 1)? "Hoạt động": "Không hoạt động" }</td>
+                        <td>
+                            <c:if test="${kh.trangThai == 1}">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-success border rounded me-2" style="width: 10px; height: 10px"> </div>
+                                    <span class="text-success " style="font-size: 14px">Hoạt động</span>
+                                </div>
+
+                            </c:if>
+                            <c:if test="${kh.trangThai == 0}">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-danger border rounded me-2" style="width: 10px; height: 10px"> </div>
+                                    <span class="text-danger" style="font-size: 14px">Không hoạt động</span>
+                                </div>
+
+                            </c:if>
+                        </td>
 
                         <td class="p-1 m-0" style="width: 1px">
                             <a class="btn btn-primary btn-sm text-light" href="/assignment_war_exploded/khach-hang/detail?id=${kh.id}">Xem</a>

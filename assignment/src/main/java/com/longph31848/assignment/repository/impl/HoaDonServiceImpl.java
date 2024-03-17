@@ -78,4 +78,15 @@ public class HoaDonServiceImpl implements HoaDonService {
     public HoaDon delete(Long id) {
         return null;
     }
+
+    @Override
+    public void tatTrangThai(Long id) {
+        String query = "UPDATE hoa_don SET trang_thai = 0 WHERE id = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 }

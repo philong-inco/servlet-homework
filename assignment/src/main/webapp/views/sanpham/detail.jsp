@@ -101,33 +101,33 @@
             </div>
 
             <%--Loading biến thể sản phẩm--%>
-            <div class="mt-5">
-                <h2 class="h4">Danh sách biến thể</h2>
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>Mã biến thể</th>
-                        <th>Màu sắc</th>
-                        <th>Kích thước</th>
-                        <th>Đơn giá</th>
-                        <th>Tồn kho</th>
-                        <th>Trạng thái</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach items="bienthelist" var="bt">
-                        <tr>
-                            <td>${bt.maSPCT}</td>
-                            <td>${bt.maSPCT}</td>
-                            <td>${bt.maSPCT}</td>
-                            <td>${bt.maSPCT}</td>
-                            <td>${bt.maSPCT}</td>
+<%--            <div class="mt-5">--%>
+<%--                <h2 class="h4">Danh sách biến thể</h2>--%>
+<%--                <table class="table table-striped">--%>
+<%--                    <thead>--%>
+<%--                    <tr>--%>
+<%--                        <th>Mã biến thể</th>--%>
+<%--                        <th>Màu sắc</th>--%>
+<%--                        <th>Kích thước</th>--%>
+<%--                        <th>Đơn giá</th>--%>
+<%--                        <th>Tồn kho</th>--%>
+<%--                        <th>Trạng thái</th>--%>
+<%--                    </tr>--%>
+<%--                    </thead>--%>
+<%--                    <tbody>--%>
+<%--                    <c:forEach items="bienthelist" var="bt">--%>
+<%--                        <tr>--%>
+<%--                            <td>${bt.maSPCT}</td>--%>
+<%--                            <td>${bt.maSPCT}</td>--%>
+<%--                            <td>${bt.maSPCT}</td>--%>
+<%--                            <td>${bt.maSPCT}</td>--%>
+<%--                            <td>${bt.maSPCT}</td>--%>
 
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </div>
+<%--                        </tr>--%>
+<%--                    </c:forEach>--%>
+<%--                    </tbody>--%>
+<%--                </table>--%>
+<%--            </div>--%>
 
 
         </div>

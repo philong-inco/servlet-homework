@@ -22,4 +22,6 @@ public interface Service<T> {
     T update(T t) throws SQLException;
 
     T delete(Long id) throws SQLException;
+
+    void tatTrangThai(Long id);
 }

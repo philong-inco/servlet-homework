@@ -201,8 +201,19 @@ public class SanPhamServiceImpl implements SanPhamService {
             }
 
         } catch (SQLException ex) {
-            throw new SQLException();
+            tatTrangThai(id);
         }
         return null;
+    }
+
+    @Override
+    public void tatTrangThai(Long id) {
+        String query = "UPDATE san_pham SET trang_thai = 0 WHERE id = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setLong(1, id);
+            ps.executeUpdate();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

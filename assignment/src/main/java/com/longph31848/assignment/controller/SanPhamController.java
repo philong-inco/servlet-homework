@@ -4,10 +4,14 @@ import com.longph31848.assignment.db.DataBaseConnection;
 import com.longph31848.assignment.entity.KichThuoc;
 import com.longph31848.assignment.entity.MauSac;
 import com.longph31848.assignment.entity.SanPham;
+import com.longph31848.assignment.entity.SanPhamChiTiet;
 import com.longph31848.assignment.repository.MauSacService;
+import com.longph31848.assignment.repository.SanPhamChiTietResponseService;
 import com.longph31848.assignment.repository.SanPhamService;
 import com.longph31848.assignment.repository.impl.MauSacServiceImpl;
+import com.longph31848.assignment.repository.impl.SanPhamChiTietResponseServiceImpl;
 import com.longph31848.assignment.repository.impl.SanPhamServiceImpl;
+import com.longph31848.assignment.response.SanPhamChiTietResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +21,10 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @WebServlet({
         "/san-pham/list",
@@ -32,6 +39,8 @@ public class SanPhamController extends HttpServlet {
 
     private Connection connection;
     private SanPhamService service;
+
+    private SanPhamChiTietResponseService serviceBienThe;
     private List<SanPham> list;
 
     @Override
@@ -39,6 +48,7 @@ public class SanPhamController extends HttpServlet {
         try {
             connection = DataBaseConnection.getConnection();
             service = new SanPhamServiceImpl();
+            serviceBienThe = new SanPhamChiTietResponseServiceImpl();
             list = service.getAll();
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -82,8 +92,12 @@ public class SanPhamController extends HttpServlet {
     }
 
     public void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Map<Long, List<SanPhamChiTietResponse>> map = new HashMap<>();
         list = service.getAll();
+        map = getMapByListSanPham(list);
+        System.out.println(map);
         req.setAttribute("sanphamlist", list);
+        req.setAttribute("bienthelist", map);
         req.getRequestDispatcher("/views/sanpham/list.jsp").forward(req, resp);
     }
 
@@ -143,5 +157,16 @@ public class SanPhamController extends HttpServlet {
         service.insert(sanPham);
 
         resp.sendRedirect("/assignment_war_exploded/san-pham/list");
+    }
+
+    public Map<Long, List<SanPhamChiTietResponse>> getMapByListSanPham(List<SanPham> listSP) throws SQLException {
+        Map<Long, List<SanPhamChiTietResponse>> map = new HashMap<>();
+        for (SanPham sp: listSP) {
+            List<SanPhamChiTietResponse> listBienThe;
+            listBienThe = serviceBienThe.findByIdSanPham(sp.getId());
+            map.put(sp.getId(), listBienThe);
+        }
+
+        return map;
     }
 }

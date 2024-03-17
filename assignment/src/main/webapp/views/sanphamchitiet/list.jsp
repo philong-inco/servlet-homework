@@ -7,84 +7,144 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib uri="jakarta.tags.core" prefix="c" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
+
 <head>
-    <title>Sản phẩm chi tiết</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function deleteById(id, idSP) {
+            if (confirm("Xác nhận xóa biến thể này?")) {
+                window.location.href = "/assignment_war_exploded/san-pham-chi-tiet/delete?id=" + id + "&idSP=" + idSP;
+            }
+        }
+    </script>
 </head>
+
 <body>
-<div class="mt-3 container">
-    <nav class="navbar navbar-expand-sm bg-light">
-        <div class="container-fluid">
-            <!-- Links -->
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/assignment_war_exploded/hoa-don">Hóa đơn</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/assignment_war_exploded/hoa-don-chi-tiet">Hóa đơn chi tiết</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/assignment_war_exploded/san-pham">Sản phẩm</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-danger" href="http://localhost:8080/assignment_war_exploded/san-pham-chi-tiet">Sản phẩm chi tiết</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/assignment_war_exploded/kich-thuoc">Kích thước</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/assignment_war_exploded/mau-sac">Màu sắc</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/assignment_war_exploded/nhan-vien">Nhân viên</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="http://localhost:8080/assignment_war_exploded/khach-hang">Khách hàng</a>
-                </li>
-            </ul>
+<div>
+    <!-- Header -->
+    <div class="bg-danger container-fluid position-sticky top-0">
+        <div class="container d-flex py-3">
+            <!-- Logo -->
+            <div class="w-25 text-light h3">
+                WEB SERVLET
+            </div>
+            <!-- Search -->
+            <div class="w-75">
+                <form action="" class="d-flex mx-5">
+                    <input type="text" name="search" class="form-control me-2" placeholder="Tìm sản phẩm...">
+                    <button class="btn btn-dark">Tìm</button>
+                </form>
+            </div>
+            <!-- Admin -->
+            <div class="w-25 d-flex justify-content-end">
+                <a href="#" class="text-decoration-none text-light d-inline-block mt-2 me-5">Admin</a>
+                <a href="#" class="text-decoration-none text-light d-inline-block mt-2">Giỏ hàng</a>
+            </div>
         </div>
-    </nav>
-    <h1 class="text-center my-3">Sản phẩm chi tiết</h1>
-    <table class="table">
-        <thead>
-        <tr>
-            <th>ID</th>
-            <th>Mã SPCT</th>
-            <th>ID kích thước</th>
-            <th>ID màu sắc</th>
-            <th>ID sản phẩm</th>
-            <th>Số lượng</th>
-            <th>Đơn giá</th>
-            <th>Trạng thái</th>
-            <th colspan="2">Thao tác</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach items="${ sanphamchitietlist }" var="spct">
-            <tr>
+        <!-- Navbar -->
+        <div>
 
-                <td>${ spct.id }</td>
-                <td>${ spct.maSPCT }</td>
-                <td>${ spct.idKichThuoc }</td>
-                <td>${ spct.idMauSac }</td>
-                <td>${ spct.idSanPham }</td>
-                <td>${ spct.soLuong }</td>
-                <td>${ spct.donGia }</td>
-                <td>${ spct.trangThai }</td>
+        </div>
+    </div>
 
-                <td>
-                    <a href="#">Sửa</a>
-                </td>
-                <td>
-                    <a href="#">Xóa</a>
-                </td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
+    <!-- Body -->
+    <div class="d-flex container" style="min-height: 450px;">
+        <div class="w-25 mt-3 ">
+            <div class="border-1 me-5 rounded shadow position-sticky" style="top: 80px;">
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="w-75  mt-3">
+            <div class="my-3">
+                <span class="h5">Tên sản phẩm: </span>
+                <span class="h5 text-danger">${sp.ten} - [${sp.ma}]</span>
+            </div>
+            <h1 class="h4 my-3">Danh sách biến thể</h1>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Mã SPCT</th>
+                    <th>Màu sắc</th>
+                    <th>Kích thước</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Trạng thái</th>
+                    <th colspan="2">Thao tác</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach items="${ sanphamchitietlist }" var="spct">
+                    <tr>
+
+                        <td>${ spct.id }</td>
+                        <td>${ spct.maSPCT }</td>
+                        <td>${ spct.mauSac }</td>
+                        <td>${ spct.kichThuoc }</td>
+                        <td>${ spct.donGia }</td>
+                        <td>${ spct.soLuong }</td>
+                        <td>
+                            <c:if test="${spct.trangThai == 1}">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-success border rounded me-2"
+                                         style="width: 10px; height: 10px"></div>
+                                    <span class="text-success "
+                                          style="font-size: 14px">Hoạt động</span>
+                                </div>
+
+                            </c:if>
+                            <c:if test="${spct.trangThai == 0}">
+                                <div class="d-flex align-items-center">
+                                    <div class="bg-danger border rounded me-2"
+                                         style="width: 10px; height: 10px"></div>
+                                    <span class="text-danger" style="font-size: 14px">Không hoạt động</span>
+                                </div>
+
+                            </c:if>
+                        </td>
+
+                        <td>
+                            <a class="btn btn-sm btn-warning"
+                               href="/assignment_war_exploded/san-pham-chi-tiet/edit?id=${spct.id}&idSP=${sp.id}">Sửa</a>
+                        </td>
+                        <td>
+                            <button onclick="deleteById(${spct.id}, ${sp.id})" class="btn btn-sm btn-danger">Xóa</button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="bg-dark py-3 text-center">
+        <span class="text-light my-2">longnvph31848 - Nguyễn Vĩnh Long</span>
+    </div>
 </div>
 </body>
+
 </html>

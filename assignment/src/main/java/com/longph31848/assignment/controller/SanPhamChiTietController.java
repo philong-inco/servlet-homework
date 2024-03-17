@@ -1,12 +1,14 @@
 package com.longph31848.assignment.controller;
 
 import com.longph31848.assignment.db.DataBaseConnection;
+import com.longph31848.assignment.entity.KichThuoc;
+import com.longph31848.assignment.entity.MauSac;
 import com.longph31848.assignment.entity.SanPham;
 import com.longph31848.assignment.entity.SanPhamChiTiet;
-import com.longph31848.assignment.repository.SanPhamChiTietService;
-import com.longph31848.assignment.repository.SanPhamService;
-import com.longph31848.assignment.repository.impl.SanPhamChiTietImpl;
-import com.longph31848.assignment.repository.impl.SanPhamServiceImpl;
+import com.longph31848.assignment.repository.*;
+import com.longph31848.assignment.repository.impl.*;
+import com.longph31848.assignment.response.SanPhamChiTietResponse;
+import com.longph31848.assignment.util.RenderMa;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -14,8 +16,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
-import java.util.List;
+import java.sql.SQLException;
+import java.util.*;
 
 @WebServlet({
         "/san-pham-chi-tiet/list",
@@ -25,11 +29,17 @@ import java.util.List;
         "/san-pham-chi-tiet/store",
         "/san-pham-chi-tiet/delete",
         "/san-pham-chi-tiet/update",
+        "/san-pham-chi-tiet/properties"
 })
 public class SanPhamChiTietController extends HttpServlet {
 
     private Connection connection;
     private SanPhamChiTietService service;
+    private SanPhamService serviceSanPham;
+    private MauSacService serviceMauSac;
+    private KichThuocService serviceKichThuoc;
+
+    private SanPhamChiTietResponseService serviceBienThe;
     private List<SanPhamChiTiet> list;
 
     @Override
@@ -37,7 +47,11 @@ public class SanPhamChiTietController extends HttpServlet {
         try {
             connection = DataBaseConnection.getConnection();
             service = new SanPhamChiTietImpl();
-            list = service.getAll();
+            serviceMauSac = new MauSacServiceImpl();
+            serviceSanPham = new SanPhamServiceImpl();
+            serviceKichThuoc = new KichThuocServiceImpl();
+            serviceBienThe = new SanPhamChiTietResponseServiceImpl();
+
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -45,54 +59,189 @@ public class SanPhamChiTietController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
-        String uri = req.getRequestURI();
-        if (uri.contains("create")) {
-            this.create(req, resp);
-        } else if (uri.contains("edit")) {
-            this.edit(req, resp);
-        } else if (uri.contains("detail")) {
-            this.detail(req, resp);
-        } else if (uri.contains("update")) {
-            this.update(req, resp);
-        } else if (uri.contains("edit")) {
-            this.edit(req, resp);
-        } else if (uri.contains("store")) {
-            this.store(req, resp);
-        } else {
-            this.list(req, resp);
+        try {
+            String uri = req.getRequestURI();
+            if (uri.contains("create")) {
+                this.create(req, resp);
+            } else if (uri.contains("edit")) {
+                this.edit(req, resp);
+            } else if (uri.contains("detail")) {
+                this.detail(req, resp);
+            } else if (uri.contains("update")) {
+                this.update(req, resp);
+            } else if (uri.contains("edit")) {
+                this.edit(req, resp);
+            } else if (uri.contains("store")) {
+                this.store(req, resp);
+            } else if (uri.contains("properties")) {
+                this.properties(req, resp);
+            } else if (uri.contains("delete")) {
+                this.delete(req, resp);
+            } else {
+                this.list(req, resp);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
+
     }
+
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String uri = req.getRequestURI();
-        if (uri.contains("update")) {
-            this.update(req, resp);
-        } else if (uri.contains("store")) {
-            this.store(req, resp);
+        try {
+            String uri = req.getRequestURI();
+            if (uri.contains("update")) {
+                this.update(req, resp);
+            } else if (uri.contains("store")) {
+                this.store(req, resp);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
-    public void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("sanphamchitietlist", list);
+
+    public void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Long idSP = Long.parseLong(req.getParameter("idSP"));
+        SanPham sp = serviceSanPham.findById(idSP);
+        List<SanPhamChiTietResponse> listBT = serviceBienThe.findByIdSanPham(idSP);
+        req.setAttribute("sanphamchitietlist", listBT);
+        req.setAttribute("sp", sp);
         req.getRequestDispatcher("/views/sanphamchitiet/list.jsp").forward(req, resp);
     }
-    public void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-    }
-    public void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    private void properties(HttpServletRequest req, HttpServletResponse resp) throws SQLException, ServletException, IOException {
+        Long idSanPham = Long.parseLong(req.getParameter("idSP"));
+        SanPham sanPham = serviceSanPham.findById(idSanPham);
+        List<MauSac> listMauSac = serviceMauSac.findByTrangThai(1);
+        List<KichThuoc> listKichThuoc = serviceKichThuoc.findByTrangThai(1);
 
-    }
-    public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println(sanPham);
+        System.out.println(listMauSac);
+        System.out.println(listKichThuoc);
 
+        req.setAttribute("sp", sanPham);
+        req.setAttribute("mausaclist", listMauSac);
+        req.setAttribute("kichthuoclist", listKichThuoc);
+        req.getRequestDispatcher("/views/sanphamchitiet/properties.jsp").forward(req, resp);
     }
+
+    public void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Map<String, String[]> data = req.getParameterMap();
+        Long idSP = Long.parseLong(req.getParameter("idSP"));
+        SanPham sp = serviceSanPham.findById(idSP);
+        String[] mauSacList = data.get("mausac");
+        String[] kichThuocList = data.get("kichthuoc");
+
+        List<SanPhamChiTietResponse> listRender = new ArrayList<>();
+        for (String mauSac : mauSacList) {
+            System.out.println(mauSac);
+            for (String kichThuoc : kichThuocList) {
+                System.out.println(kichThuoc);
+                String mauSacName = serviceMauSac.findById(Long.parseLong(mauSac)).getTen();
+                String kichThuocName = serviceKichThuoc.findById(Long.parseLong(kichThuoc)).getTen();
+                SanPhamChiTietResponse spct = SanPhamChiTietResponse.getBuilder()
+                        .idMauSac(Long.parseLong(mauSac))
+                        .mauSac(mauSacName)
+                        .idKichThuoc(Long.parseLong(kichThuoc))
+                        .kichThuoc(kichThuocName)
+                        .soLuong(0)
+                        .donGia(BigDecimal.valueOf(0))
+                        .trangThai(1)
+                        .build();
+                listRender.add(spct);
+            }
+        }
+
+        req.setAttribute("listrender", listRender);
+        req.setAttribute("sp", sp);
+        req.getRequestDispatcher("/views/sanphamchitiet/create.jsp").forward(req, resp);
+    }
+
+    public void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Long id = Long.parseLong(req.getParameter("id"));
+
+        SanPhamChiTietResponse bienThe = serviceBienThe.findById(id);
+        List<MauSac> mauSacList = serviceMauSac.getAll();
+        List<KichThuoc> kichThuocList = serviceKichThuoc.getAll();
+        SanPham sanPham = serviceSanPham.findById(Long.parseLong(req.getParameter("idSP")));
+        req.setAttribute("bt", bienThe);
+        req.setAttribute("mausaclist", mauSacList);
+        req.setAttribute("kichthuoclist", kichThuocList);
+        req.setAttribute("sp", sanPham);
+        req.getRequestDispatcher("/views/sanphamchitiet/edit.jsp").forward(req, resp);
+    }
+
+    public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Long id = Long.parseLong(req.getParameter("id"));
+        String idSP = req.getParameter("idSP");
+        service.delete(id);
+        resp.sendRedirect("/assignment_war_exploded/san-pham-chi-tiet/list?idSP=" + idSP);
+    }
+
     public void detail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
     }
-    public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+    public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Long id = Long.parseLong(req.getParameter("id"));
+        Long idSP = Long.parseLong(req.getParameter("idSP"));
+        Long idMauSac = Long.parseLong(req.getParameter("mausac"));
+        Long idKichThuoc = Long.parseLong(req.getParameter("kichthuoc"));
+        BigDecimal donGia = new BigDecimal(req.getParameter("dongia"));
+        Integer soLuong = Integer.parseInt(req.getParameter("soluong"));
+        Integer trangThai = Integer.parseInt(req.getParameter("trangthai"));
+        SanPhamChiTiet spct = SanPhamChiTiet.getBuilder()
+                .withId(id)
+                .withIdSanPham(idSP)
+                .withIdMauSac(idMauSac)
+                .withIdKichThuoc(idKichThuoc)
+                .withDonGia(donGia)
+                .withSoLuong(soLuong)
+                .withTrangThai(trangThai)
+                .build();
+
+        service.update(spct);
+        resp.sendRedirect("/assignment_war_exploded/san-pham-chi-tiet/list?idSP=" + idSP);
     }
-    public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+    public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Map<String, String[]> mapData = req.getParameterMap();
+        Set<String> keySet = mapData.keySet();
+        Long idSp = Long.parseLong(mapData.get("idSP")[0]);
+
+        int bienTheCount = (keySet.size() - 1) / 5;
+        for (int i = 0; i < bienTheCount; i++) {
+            SanPhamChiTiet spct = SanPhamChiTiet.getBuilder()
+                    .withIdSanPham(idSp)
+                    .withMaSPCT(RenderMa.renderMa("BT", 6))
+                    .withIdMauSac(Long.parseLong(mapData.get("idMauSac_" + i)[0]))
+                    .withIdKichThuoc(Long.parseLong(mapData.get("idKichThuoc_" + i)[0]))
+                    .withDonGia(new BigDecimal(mapData.get("donGia_" + i)[0]))
+                    .withSoLuong(Integer.parseInt(mapData.get("soLuong_" + i)[0]))
+                    .withTrangThai(Integer.parseInt(mapData.get("trangThai_" + i)[0]))
+                    .build();
+
+            service.insert(spct);
+            System.out.println(spct.toString()); //
+
+            resp.sendRedirect("/assignment_war_exploded/san-pham/list");
+        }
+
+
+//        System.out.println("Số cặp: " + mapData.size());
+//        Set<String> setKey = mapData.keySet();
+//        System.out.println("----các key:");
+//        for (String x: setKey) {
+//            System.out.println(x);
+//        }
+//        Collection<String[]> listValue = mapData.values();
+//        System.out.println("-----các value:");
+//        for (String[] o : listValue) {
+//            for (String a : o) {
+//                System.out.println(a);
+//            }
+//        }
+//        Đã lấy được thông tin, giờ chuyển sang insert là xong
     }
 }

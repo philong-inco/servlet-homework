@@ -6,7 +6,9 @@ public class SanPhamChiTietResponse {
 
     private Long id;
     private String maSPCT;
+    private Long idMauSac;
     private String mauSac;
+    private Long idKichThuoc;
     private String kichThuoc;
     private BigDecimal donGia;
     private Integer soLuong;
@@ -52,6 +54,20 @@ public class SanPhamChiTietResponse {
         public SanPhamChiTietResponseBuilder trangThai(Integer trangThai) {
             this.bienThe.trangThai = trangThai;
             return this;
+        }
+
+        public SanPhamChiTietResponseBuilder idKichThuoc(Long idKichThuoc) {
+            this.bienThe.idKichThuoc = idKichThuoc;
+            return this;
+        }
+
+        public SanPhamChiTietResponseBuilder idMauSac(Long idMauSac) {
+            this.bienThe.idMauSac = idMauSac;
+            return this;
+        }
+
+        public SanPhamChiTietResponse build() {
+            return this.bienThe;
         }
 
     }
@@ -112,12 +128,30 @@ public class SanPhamChiTietResponse {
         this.trangThai = trangThai;
     }
 
+    public Long getIdMauSac() {
+        return idMauSac;
+    }
+
+    public void setIdMauSac(Long idMauSac) {
+        this.idMauSac = idMauSac;
+    }
+
+    public Long getIdKichThuoc() {
+        return idKichThuoc;
+    }
+
+    public void setIdKichThuoc(Long idKichThuoc) {
+        this.idKichThuoc = idKichThuoc;
+    }
+
     @Override
     public String toString() {
         return "SanPhamChiTietResponse{" +
                 "id=" + id +
                 ", maSPCT='" + maSPCT + '\'' +
+                ", idMauSac=" + idMauSac +
                 ", mauSac='" + mauSac + '\'' +
+                ", idKichThuoc=" + idKichThuoc +
                 ", kichThuoc='" + kichThuoc + '\'' +
                 ", donGia=" + donGia +
                 ", soLuong=" + soLuong +

@@ -9,8 +9,18 @@
 <html>
 <head>
     <title>Title</title>
+    <script>
+        var check = false;
+        function click(){
+            check = !check;
+        }
+    </script>
 </head>
 <body>
-
+    <h1>Test hiển thị click</h1>
+    <button onclick="click()">Hiện ra</button>
+    <c:if test="check">
+        <button>Kết quả</button>
+    </c:if>
 </body>
 </html>

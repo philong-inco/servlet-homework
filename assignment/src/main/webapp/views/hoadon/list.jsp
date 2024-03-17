@@ -12,7 +12,12 @@
     <title>Hóa đơn</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <script>
+        function click1(){
+            var div = document.getElementById("1");
+            div.style.display = (div.style.display === "none") ? "block" : "none";
+        }
+    </script>
 </head>
 <body>
 <div class="mt-3 container">
@@ -79,6 +84,14 @@
         </c:forEach>
         </tbody>
     </table>
+
+    <h1>Test hiển thị click</h1>
+    <button onclick="click1()">Hiện ra</button>
+
+        <div id="1" style="display: none">
+            <button>Kết quả</button>
+        </div>
+
 </div>
 </body>
 </html>
