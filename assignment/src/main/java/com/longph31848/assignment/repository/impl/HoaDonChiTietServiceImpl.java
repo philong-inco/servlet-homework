@@ -44,4 +44,60 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
         return list;
     }
+
+    @Override
+    public void insert(HoaDonChiTiet hdct) {
+        String query = "INSERT INTO hoa_don_chi_tiet(so_luong, don_gia, trang_thai, id_hoa_don, idspct) VALUES(?,?,?,?,?)";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setInt(1, hdct.getSoLuong());
+            ps.setBigDecimal(2, hdct.getDonGia());
+            ps.setInt(3, hdct.getTrangThai());
+            ps.setLong(4, hdct.getIdHoaDon());
+            ps.setLong(5, hdct.getIdSPCT());
+            ps.execute();
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void update(HoaDonChiTiet hdct) {
+        String query = "UPDATE hoa_don_chi_tiet SET so_luong = ?, don_gia = ?, trang_thai = ? WHERE id = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setInt(1, hdct.getSoLuong());
+            ps.setBigDecimal(2, hdct.getDonGia());
+            ps.setInt(3, hdct.getTrangThai());
+            ps.setLong(4, hdct.getId());
+            ps.execute();
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void delete(Long id) {
+        String query = "DELETE FROM hoa_don_chi_tiet WHERE id = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setLong(1, id);
+            ps.execute();
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void tatTrangThai(Long id) {
+        String query = "UPDATE hoa_don_chi_tiet SET trang_thai = ? WHERE id = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setInt(1, 0);
+            ps.setLong(2, id);
+            ps.execute();
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
 }

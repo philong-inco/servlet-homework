@@ -27,14 +27,14 @@ import java.util.List;
 })
 public class KhachHangController extends HttpServlet {
 
-    private Connection connection;
+
     private KhachHangService service;
     private List<KhachHang> list;
 
     @Override
     public void init() {
         try {
-            connection = DataBaseConnection.getConnection();
+
             service = new KhachHangServiceImpl();
             list = service.getAll();
         } catch (Exception ex) {

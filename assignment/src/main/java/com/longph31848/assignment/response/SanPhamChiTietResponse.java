@@ -14,6 +14,8 @@ public class SanPhamChiTietResponse {
     private Integer soLuong;
     private Integer trangThai;
 
+    private String tenSanPham;
+
     public static SanPhamChiTietResponseBuilder getBuilder() {
         return new SanPhamChiTietResponseBuilder();
     }
@@ -63,6 +65,11 @@ public class SanPhamChiTietResponse {
 
         public SanPhamChiTietResponseBuilder idMauSac(Long idMauSac) {
             this.bienThe.idMauSac = idMauSac;
+            return this;
+        }
+
+        public SanPhamChiTietResponseBuilder tenSanPham(String tenSP) {
+            this.bienThe.tenSanPham = tenSP;
             return this;
         }
 
@@ -144,6 +151,14 @@ public class SanPhamChiTietResponse {
         this.idKichThuoc = idKichThuoc;
     }
 
+    public String getTenSanPham() {
+        return tenSanPham;
+    }
+
+    public void setTenSanPham(String tenSanPham) {
+        this.tenSanPham = tenSanPham;
+    }
+
     @Override
     public String toString() {
         return "SanPhamChiTietResponse{" +
@@ -156,6 +171,7 @@ public class SanPhamChiTietResponse {
                 ", donGia=" + donGia +
                 ", soLuong=" + soLuong +
                 ", trangThai=" + trangThai +
+                ", tenSanPham='" + tenSanPham + '\'' +
                 '}';
     }
 }

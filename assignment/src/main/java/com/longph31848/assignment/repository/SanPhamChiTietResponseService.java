@@ -11,4 +11,8 @@ public interface SanPhamChiTietResponseService {
     List<SanPhamChiTietResponse> findByIdSanPham(Long id) throws SQLException;
 
     SanPhamChiTietResponse findById(Long id) throws SQLException;
+
+    List<SanPhamChiTietResponse> finnByTrangThai(Integer trangThai) throws SQLException;
+
+
 }

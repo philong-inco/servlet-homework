@@ -92,7 +92,7 @@ public class SanPhamController extends HttpServlet {
     }
 
     public void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        Map<Long, List<SanPhamChiTietResponse>> map = new HashMap<>();
+        Map<Long, List<SanPhamChiTietResponse>> map;
         list = service.getAll();
         map = getMapByListSanPham(list);
         System.out.println(map);

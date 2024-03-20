@@ -99,7 +99,7 @@
                 </thead>
                 <tbody>
                 <c:forEach items="${ sanphamlist }" var="sp">
-                    <tr style="position: relative" ;>
+                    <tr style="position: relative";>
                         <td>${ sp.id }</td>
                         <td>${ sp.ma }</td>
                         <td>${ sp.ten }</td>

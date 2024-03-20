@@ -79,4 +79,36 @@ public class SanPhamChiTietResponseServiceImpl implements SanPhamChiTietResponse
 
         return null;
     }
+
+    @Override
+    public List<SanPhamChiTietResponse> finnByTrangThai(Integer trangThai) throws SQLException {
+        List<SanPhamChiTietResponse> list = new ArrayList<>();
+        String query = "SELECT spct.id, spct.maspct, m.ten, kt.ten, spct.don_gia, spct.so_luong, spct.trang_thai, m.id, kt.id, s.ten " +
+                " FROM san_pham_chi_tiet spct " +
+                " JOIN san_pham s ON spct.id_san_pham=s.id " +
+                " JOIN mau_sac m ON spct.id_mau_sac=m.id " +
+                " JOIN kich_thuoc kt ON spct.id_kich_thuoc=kt.id " +
+                " WHERE spct.trang_thai = ?";
+        PreparedStatement ps = cn.prepareStatement(query);
+        ps.setInt(1, trangThai);
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            SanPhamChiTietResponse spct = SanPhamChiTietResponse.getBuilder()
+                    .id(rs.getLong(1))
+                    .maSPCT(rs.getString(2))
+                    .mauSac(rs.getString(3))
+                    .kichThuoc(rs.getString(4))
+                    .donGia(rs.getBigDecimal(5))
+                    .soLuong(rs.getInt(6))
+                    .trangThai(rs.getInt(7))
+                    .idMauSac(rs.getLong(8))
+                    .idKichThuoc(rs.getLong(9))
+                    .tenSanPham(rs.getString(10))
+                    .build();
+
+            list.add(spct);
+        }
+
+        return list;
+    }
 }

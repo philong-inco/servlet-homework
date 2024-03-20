@@ -61,6 +61,22 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public HoaDon findById(Long id) {
+        String query = "SELECT trang_thai, id, id_khach_hang, id_nhan_vien, ngay_mua_hang FROM hoa_don WHERE id = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setLong(1, id);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                HoaDon hoaDon = HoaDon.getBuilder()
+                        .withTrangThai(rs.getInt(1))
+                        .withIdKhachHang(rs.getLong(2))
+                        .withIdNhanVien(rs.getLong(3))
+                        .withNgayMuaHang(rs.getLong(4))
+                        .build();
+                return hoaDon;
+            }
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
         return null;
     }
 
@@ -71,6 +87,17 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public HoaDon update(HoaDon hoaDon) {
+        String query = "UPDATE hoa_don SET id_khach_hang = ?, id_nhan_vien = ?, trang_thai = ? WHERE id = ?";
+        try (PreparedStatement ps = cn.prepareStatement(query)){
+            ps.setLong(1, hoaDon.getIdKhachHang());
+            ps.setLong(2, hoaDon.getIdNhanVien());
+            ps.setLong(3, hoaDon.getTrangThai());
+            ps.setLong(4, hoaDon.getId());
+            ps.executeUpdate();
+            return findById(hoaDon.getId());
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
         return null;
     }
 
