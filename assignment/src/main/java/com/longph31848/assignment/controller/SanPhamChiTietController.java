@@ -134,10 +134,17 @@ public class SanPhamChiTietController extends HttpServlet {
         String[] kichThuocList = data.get("kichthuoc");
 
         List<SanPhamChiTietResponse> listRender = new ArrayList<>();
+        List<SanPhamChiTietResponse> listExist = new ArrayList<>();
         for (String mauSac : mauSacList) {
-            System.out.println(mauSac);
             for (String kichThuoc : kichThuocList) {
-                System.out.println(kichThuoc);
+                // check biến thể tồn tại
+                SanPhamChiTietResponse spctCheck = serviceBienThe.isExist(idSP, Long.parseLong(mauSac), Long.parseLong(kichThuoc));
+                if (spctCheck != null) {
+                    listExist.add(spctCheck);
+                    continue;
+                }
+
+                // Nếu chưa tồn tại thì cho vào list render
                 String mauSacName = serviceMauSac.findById(Long.parseLong(mauSac)).getTen();
                 String kichThuocName = serviceKichThuoc.findById(Long.parseLong(kichThuoc)).getTen();
                 SanPhamChiTietResponse spct = SanPhamChiTietResponse.getBuilder()
@@ -152,15 +159,17 @@ public class SanPhamChiTietController extends HttpServlet {
                 listRender.add(spct);
             }
         }
-
+        int sizeListExist = listExist.size();
+        req.setAttribute("sizeExist", sizeListExist);
         req.setAttribute("listrender", listRender);
+        req.setAttribute("listexist", listExist);
         req.setAttribute("sp", sp);
         req.getRequestDispatcher("/views/sanphamchitiet/create.jsp").forward(req, resp);
     }
 
     public void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         Long id = Long.parseLong(req.getParameter("id"));
-
+        String mess = req.getParameter("mess");
         SanPhamChiTietResponse bienThe = serviceBienThe.findById(id);
         List<MauSac> mauSacList = serviceMauSac.getAll();
         List<KichThuoc> kichThuocList = serviceKichThuoc.getAll();
@@ -169,6 +178,7 @@ public class SanPhamChiTietController extends HttpServlet {
         req.setAttribute("mausaclist", mauSacList);
         req.setAttribute("kichthuoclist", kichThuocList);
         req.setAttribute("sp", sanPham);
+        req.setAttribute("mess", mess);
         req.getRequestDispatcher("/views/sanphamchitiet/edit.jsp").forward(req, resp);
     }
 
@@ -188,6 +198,13 @@ public class SanPhamChiTietController extends HttpServlet {
         Long idSP = Long.parseLong(req.getParameter("idSP"));
         Long idMauSac = Long.parseLong(req.getParameter("mausac"));
         Long idKichThuoc = Long.parseLong(req.getParameter("kichthuoc"));
+        // check xem có sửa sang biến thể khác có sẵn không
+        SanPhamChiTietResponse spctCheck = serviceBienThe.isExist(idSP, idMauSac, idKichThuoc);
+        if (spctCheck != null && !spctCheck.getId().equals(id)) {
+            System.out.println("Có sẵn: " + spctCheck.toString());
+            resp.sendRedirect("/assignment_war_exploded/san-pham-chi-tiet/edit?id=" + id + "&idSP=" + idSP + "&mess=1");
+            return;
+        }
         BigDecimal donGia = new BigDecimal(req.getParameter("dongia"));
         Integer soLuong = Integer.parseInt(req.getParameter("soluong"));
         Integer trangThai = Integer.parseInt(req.getParameter("trangthai"));
@@ -207,6 +224,11 @@ public class SanPhamChiTietController extends HttpServlet {
 
     public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         Map<String, String[]> mapData = req.getParameterMap();
+        System.out.println(mapData.size());
+        if (mapData.size() <= 1) {
+            resp.sendRedirect("/assignment_war_exploded/san-pham/list");
+            return;
+        }
         Set<String> keySet = mapData.keySet();
         Long idSp = Long.parseLong(mapData.get("idSP")[0]);
 
@@ -227,21 +249,5 @@ public class SanPhamChiTietController extends HttpServlet {
 
             resp.sendRedirect("/assignment_war_exploded/san-pham/list");
         }
-
-
-//        System.out.println("Số cặp: " + mapData.size());
-//        Set<String> setKey = mapData.keySet();
-//        System.out.println("----các key:");
-//        for (String x: setKey) {
-//            System.out.println(x);
-//        }
-//        Collection<String[]> listValue = mapData.values();
-//        System.out.println("-----các value:");
-//        for (String[] o : listValue) {
-//            for (String a : o) {
-//                System.out.println(a);
-//            }
-//        }
-//        Đã lấy được thông tin, giờ chuyển sang insert là xong
     }
 }

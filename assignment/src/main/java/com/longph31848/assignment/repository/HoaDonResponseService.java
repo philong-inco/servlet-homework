@@ -13,4 +13,6 @@ public interface HoaDonResponseService {
     HoaDonResponse findHoaDonResponeById(Long id);
 
     HoaDonChiTietResponse findByIdHDCT(Long id);
+
+    List<HoaDonResponse> findByTrangThai(Integer trangThai);
 }

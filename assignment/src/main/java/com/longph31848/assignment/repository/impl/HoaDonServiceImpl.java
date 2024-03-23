@@ -81,7 +81,34 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
-    public HoaDon insert(HoaDon hoaDon) {
+    public HoaDon insert(HoaDon hoaDon) throws SQLException {
+        String queryInsert = "INSERT INTO hoa_don(id_khach_hang, id_nhan_vien, ngay_mua_hang, trang_thai) VALUES (?,?,?,?)";
+        String queryResult = "SELECT * FROM servlet_assignment.hoa_don WHERE id = LAST_INSERT_ID()";
+        try (PreparedStatement psInsert = cn.prepareStatement(queryInsert);
+             PreparedStatement psResult = cn.prepareStatement(queryResult)) {
+
+            psInsert.setLong(1, hoaDon.getIdKhachHang());
+            psInsert.setLong(2, hoaDon.getIdNhanVien());
+            psInsert.setLong(3, hoaDon.getNgayMuaHang());
+            psInsert.setInt(4, hoaDon.getTrangThai());
+            psInsert.executeUpdate();
+
+            ResultSet rs = psResult.executeQuery();
+            while (rs.next()) {
+                HoaDon result = HoaDon.getBuilder()
+                        .withTrangThai(rs.getInt(1))
+                        .withId(rs.getLong(2))
+                        .withIdKhachHang(rs.getLong(3))
+                        .withIdNhanVien(rs.getLong(4))
+                        .withNgayMuaHang(rs.getLong(5))
+                        .build();
+
+                return result;
+            }
+
+        } catch (SQLException ex) {
+            throw new SQLException();
+        }
         return null;
     }
 
@@ -103,6 +130,18 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public HoaDon delete(Long id) {
+        HoaDon result = findById(id);
+        String queryDelete = "DELETE FROM hoa_don WHERE id = ?";
+        try (PreparedStatement psDelete = cn.prepareStatement(queryDelete)) {
+            psDelete.setLong(1, id);
+            int rowUpdate = psDelete.executeUpdate();
+            if (rowUpdate >= 1) {
+                return result;
+            }
+
+        } catch (SQLException ex) {
+            tatTrangThai(id);
+        }
         return null;
     }
 

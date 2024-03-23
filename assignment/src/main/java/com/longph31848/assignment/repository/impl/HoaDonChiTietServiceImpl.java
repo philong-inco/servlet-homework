@@ -63,12 +63,13 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Override
     public void update(HoaDonChiTiet hdct) {
-        String query = "UPDATE hoa_don_chi_tiet SET so_luong = ?, don_gia = ?, trang_thai = ? WHERE id = ?";
+        String query = "UPDATE hoa_don_chi_tiet SET so_luong = ?, don_gia = ?, trang_thai = ?, idspct = ? WHERE id = ?";
         try(PreparedStatement ps = cn.prepareStatement(query)) {
             ps.setInt(1, hdct.getSoLuong());
             ps.setBigDecimal(2, hdct.getDonGia());
             ps.setInt(3, hdct.getTrangThai());
-            ps.setLong(4, hdct.getId());
+            ps.setLong(4, hdct.getIdSPCT());
+            ps.setLong(5, hdct.getId());
             ps.execute();
 
         } catch (Exception ex){

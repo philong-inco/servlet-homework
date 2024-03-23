@@ -66,16 +66,16 @@
                     <div class="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa đơn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -97,6 +97,7 @@
                         <th>Đơn giá</th>
                         <th>Số lượng</th>
                         <th>Trạng thái</th>
+                        <th colspan="2">Thao tác</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -108,24 +109,36 @@
                             <td>${hdct.tenKichThuoc}</td>
                             <td>${hdct.donGia}</td>
                             <td>${hdct.soLuong}</td>
-                            <td colspan="2"></td>
                             <td>
+                                <c:if test="${hdct.trangThai == 0}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-danger border rounded me-2"
+                                             style="width: 10px; height: 10px"></div>
+                                        <span class="text-danger" style="font-size: 14px">Trả hàng/Hoàn tiền</span>
+                                    </div>
+                                </c:if>
                                 <c:if test="${hdct.trangThai == 1}">
                                     <div class="d-flex align-items-center">
                                         <div class="bg-success border rounded me-2"
                                              style="width: 10px; height: 10px"></div>
                                         <span class="text-success "
-                                              style="font-size: 14px">Hoạt động</span>
+                                              style="font-size: 14px">Giao thành công</span>
                                     </div>
 
                                 </c:if>
-                                <c:if test="${hdct.trangThai == 0}">
+                                <c:if test="${hdct.trangThai == 2}">
                                     <div class="d-flex align-items-center">
-                                        <div class="bg-danger border rounded me-2"
+                                        <div class="bg-warning border rounded me-2"
                                              style="width: 10px; height: 10px"></div>
-                                        <span class="text-danger" style="font-size: 14px">Không hoạt động</span>
+                                        <span class="text-warning" style="font-size: 14px">Đổi hàng</span>
                                     </div>
-
+                                </c:if>
+                                <c:if test="${hdct.trangThai == 3}">
+                                    <div class="d-flex align-items-center">
+                                        <div class="bg-primary border rounded me-2"
+                                             style="width: 10px; height: 10px"></div>
+                                        <span class="text-primary" style="font-size: 14px">Đang xử lý</span>
+                                    </div>
                                 </c:if>
                             </td>
                             <td><a class="btn btn-sm btn-warning" href="/assignment_war_exploded/hoa-don-chi-tiet/edit?idHDCT=${hdct.id}">Sửa</a></td>

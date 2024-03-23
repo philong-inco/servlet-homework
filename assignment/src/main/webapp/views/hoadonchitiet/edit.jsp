@@ -66,16 +66,16 @@
                     <div class="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa đơn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -104,16 +104,18 @@
                     <div class="mt-3">
                         <label class="form-label">Trạng thái</label>
                         <select class="form-control" name="trangthai" class="form-label">
-                            <option ${(hdct.trangThai == 1)?"selected": ""} value="1">Hoạt động</option>
-                            <option ${(hdct.trangThai == 0)?"selected": ""} value="0">Không hoạt động</option>
+                            <option ${(hdct.trangThai == 0)?"selected": ""} value="0">Trả hàng/Hoàn tiền</option>
+                            <option ${(hdct.trangThai == 1)?"selected": ""} value="1">Giao thành công</option>
+                            <option ${(hdct.trangThai == 2)?"selected": ""} value="2">Đổi hàng</option>
+                            <option ${(hdct.trangThai == 3)?"selected": ""} value="3">Đang xử lý</option>
                         </select>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Sản phẩm: ${hdct.tenSanPham} [${hdct.tenMau} -  ${hdct.tenKichThuoc}]</label>
-                        <div class="p-2 d-inline-block bg-primary" onclick="visableHDCT()">Chọn sản phẩm</div>
+                        <label class="form-label">Sản phẩm: <span class="fw-bold">${hdct.tenSanPham}</span> <span class="text-primary fw-bold">[${hdct.tenMau} -  ${hdct.tenKichThuoc}]</span></label>
+                        <div style="background: cornflowerblue; cursor: pointer;" class="p-2 d-inline-block border rounded" onclick="visableHDCT()">Chọn sản phẩm</div>
                         <%--Danh sách sản phẩm--%>
                         <div class="border border-danger rounded shadow bg-light" id="divHDCT"
-                             style="display: none; position: absolute; bottom: 0px; right: 20px; z-index: 9999; max-height: 700px; overflow-y: auto;">
+                             style="display: none; position: absolute; bottom: 120px; right: 20px; z-index: 9999; max-height: 300px; overflow-y: auto;">
                             <table class="table table-striped">
                                 <thead>
                                 <tr>
@@ -138,24 +140,40 @@
                                         <td>${spct.soLuong}</td>
                                         <td>${spct.donGia}</td>
                                         <td>
-                                            <c:if test="${spct.trangThai == 1}">
-                                                <div class="d-flex align-items-center">
-                                                    <div class="bg-success border rounded me-2"
-                                                         style="width: 10px; height: 10px"></div>
-                                                    <span class="text-success "
-                                                          style="font-size: 14px">Hoạt động</span>
-                                                </div>
-
-                                            </c:if>
                                             <c:if test="${spct.trangThai == 0}">
                                                 <div class="d-flex align-items-center">
                                                     <div class="bg-danger border rounded me-2"
                                                          style="width: 10px; height: 10px"></div>
                                                     <span class="text-danger"
-                                                          style="font-size: 14px">Không hoạt động</span>
+                                                          style="font-size: 14px">Trả hàng/Hoàn tiền</span>
                                                 </div>
 
                                             </c:if>
+                                            <c:if test="${spct.trangThai == 1}">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-success border rounded me-2"
+                                                         style="width: 10px; height: 10px"></div>
+                                                    <span class="text-success "
+                                                          style="font-size: 14px">Giao thành công</span>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${spct.trangThai == 2}">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-warning border rounded me-2"
+                                                         style="width: 10px; height: 10px"></div>
+                                                    <span class="text-warning"
+                                                          style="font-size: 14px">Đổi hàng</span>
+                                                </div>
+                                            </c:if>
+                                            <c:if test="${spct.trangThai == 3}">
+                                                <div class="d-flex align-items-center">
+                                                    <div class="bg-secondary border rounded me-2"
+                                                         style="width: 10px; height: 10px"></div>
+                                                    <span class="text-secondary"
+                                                          style="font-size: 14px">Đang xử lý</span>
+                                                </div>
+                                            </c:if>
+
                                         </td>
                                     </tr>
                                 </c:forEach>

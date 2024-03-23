@@ -16,6 +16,7 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
     <script>
 
     </script>
@@ -57,20 +58,21 @@
                     <div class="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa đơn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách hàng</a>
                             </li>
                         </ul>
                     </div>
                 </nav>
+                <div id="notification-container"></div>
             </div>
         </div>
         <div class="w-75  mt-3">
@@ -121,6 +123,11 @@
                     </div>
                     <div class="mt-3 text-center">
                         <button class="btn btn-warning">Sửa</button>
+                    </div>
+                    <div class="mt-3">
+                       <c:if test="${mess == 1}">
+                           <span class="text-danger">Biến thể đã tồn tại</span>
+                       </c:if>
                     </div>
                 </form>
             </div>

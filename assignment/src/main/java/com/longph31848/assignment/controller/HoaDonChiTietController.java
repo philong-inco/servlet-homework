@@ -1,8 +1,10 @@
 package com.longph31848.assignment.controller;
 
 import com.longph31848.assignment.db.DataBaseConnection;
+import com.longph31848.assignment.entity.HoaDon;
 import com.longph31848.assignment.entity.HoaDonChiTiet;
 import com.longph31848.assignment.entity.SanPham;
+import com.longph31848.assignment.entity.SanPhamChiTiet;
 import com.longph31848.assignment.repository.*;
 import com.longph31848.assignment.repository.impl.*;
 import com.longph31848.assignment.response.HoaDonChiTietResponse;
@@ -34,6 +36,8 @@ public class HoaDonChiTietController extends HttpServlet {
     private HoaDonChiTietService service;
     private HoaDonResponseService serviceHoaDon;
 
+    private SanPhamChiTietService serviceSPCT;
+
     private SanPhamChiTietResponseService serviceSPCTResponse;
 
     @Override
@@ -43,6 +47,7 @@ public class HoaDonChiTietController extends HttpServlet {
             service = new HoaDonChiTietServiceImpl();
             serviceHoaDon = new HoaDonResponseServiceImpl();
             serviceSPCTResponse = new SanPhamChiTietResponseServiceImpl();
+            serviceSPCT = new SanPhamChiTietImpl();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -127,25 +132,50 @@ public class HoaDonChiTietController extends HttpServlet {
 
     }
 
-    public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        Long idHDCT = Long.parseLong(req.getParameter("id"));
-//        HoaDonChiTietResponse hdctOld = serviceHoaDon.findByIdHDCT(idHDCT);
-//        Long idSPCT = hdctOld.getIdSPCT();
-//        Long idHD = Long.parseLong(req.getParameter("idHD"));
-//        BigDecimal donGia = new BigDecimal(req.getParameter("dongia"));
-//        Integer soLuong = Integer.parseInt(req.getParameter("soluong"));
-//        Integer trangThai = Integer.parseInt(req.getParameter("trangthai"));
-//        if (req.getParameter(""))
-//
-//
-//        HoaDonChiTiet hdct = HoaDonChiTiet.getBuilder()
-//                .withId(idHDCT)
-//                .withIdSPCT()
-//
-//
-//                .build();
+    public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
+        Long idHDCT = Long.parseLong(req.getParameter("id"));
+        HoaDonChiTietResponse hdctOld = serviceHoaDon.findByIdHDCT(idHDCT);
+        Long idSPCT = hdctOld.getIdSPCT();
+        Long idHD = Long.parseLong(req.getParameter("idHD"));
+        BigDecimal donGia = new BigDecimal(req.getParameter("dongia"));
+        Integer soLuong = Integer.parseInt(req.getParameter("soluong"));
+        Integer trangThai = Integer.parseInt(req.getParameter("trangthai"));
 
+        if (req.getParameter("idSPCT") != null) {
+            idSPCT = Long.parseLong(req.getParameter("idSPCT"));
+        }
 
+        HoaDonChiTiet hdctUpdate = HoaDonChiTiet.getBuilder()
+                .withId(idHDCT)
+                .withIdHoaDon(idHD)
+                .withDonGia(donGia)
+                .withSoLuong(soLuong)
+                .withTrangThai(trangThai)
+                .withIdSPCT(idSPCT)
+                .build();
+
+        System.out.println("HD old: " + hdctOld.toString());
+        System.out.println("HD update: " + hdctUpdate.toString());
+        service.update(hdctUpdate);
+        if (hdctOld.getIdSPCT() == hdctUpdate.getIdSPCT()) {
+            // Case giữ nguyên sản phẩm và sửa số lượng
+            if (hdctUpdate.getSoLuong() < hdctOld.getSoLuong()) {
+                updateQuantityProduct(hdctUpdate.getIdSPCT(), -(hdctOld.getSoLuong() - hdctUpdate.getSoLuong()));
+            } else if (hdctUpdate.getSoLuong() > hdctOld.getSoLuong()) {
+                updateQuantityProduct(hdctUpdate.getIdSPCT(), (hdctUpdate.getSoLuong() - hdctOld.getSoLuong()));
+            }
+        } else {
+            // Case sửa sang sản phẩm khác
+            updateQuantityProduct(hdctOld.getIdSPCT(), -hdctOld.getSoLuong());
+            updateQuantityProduct(hdctUpdate.getIdSPCT(), hdctUpdate.getSoLuong());
+        }
+
+        if (hdctOld.getTrangThai() != 0 && hdctUpdate.getTrangThai() == 0){
+            // Case chuyển trạng thái sang trả hàng/ thêm lại sản phâm
+        } else if (hdctOld.getTrangThai() == 0 && hdctUpdate.getTrangThai() != 0){
+            // Case chuyển trạng thái trả hàng trở lại các trạng thái khác
+        }
+        resp.sendRedirect("/assignment_war_exploded/hoa-don-chi-tiet/list?idHD=" + idHD);
     }
 
     public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -163,5 +193,12 @@ public class HoaDonChiTietController extends HttpServlet {
                 .build();
         service.insert(hdct);
         resp.sendRedirect("/assignment_war_exploded/hoa-don-chi-tiet/create?idHD=" + idHD);
+    }
+
+    public void updateQuantityProduct(Long idSPCT, Integer totalSell) throws SQLException {
+        SanPhamChiTiet spct = serviceSPCT.findById(idSPCT);
+        Integer soLuong = spct.getSoLuong();
+        spct.setSoLuong(soLuong - totalSell);
+        serviceSPCT.update(spct);
     }
 }

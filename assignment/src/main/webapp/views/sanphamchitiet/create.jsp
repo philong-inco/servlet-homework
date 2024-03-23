@@ -48,16 +48,16 @@
                     <div class="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa đơn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -77,44 +77,82 @@
                     </div>
                     <h2 class="h4">Vui lòng điền đủ thông tin các trường</h2>
 
-                    <form action="" method="POST">
-                        <c:forEach items="${listrender}" var="o" varStatus="loop">
-                            <div class="border shadow my-3 p-1 d-flex">
+
+                    <c:forEach items="${listrender}" var="o" varStatus="loop">
+                        <div class="border shadow my-3 p-1 d-flex">
+                            <div class="w-25 pb-2">
+                                <div class="p-1 mt-1 border rounded" style="background: darksalmon">
+                                    <label>Màu: ${o.mauSac}</label>
+                                </div>
+                                <div class="p-1 mt-1 border rounded" style="background: indianred">
+                                    <label>Kích thước: ${o.kichThuoc}</label>
+                                </div>
+                                <input type="hidden" name="idMauSac_${loop.index}" value="${o.idMauSac}">
+                                <input type="hidden" name="idKichThuoc_${loop.index}" value="${o.idKichThuoc}">
+                            </div>
+                            <div class="w-75 d-flex align-items-center">
+                                <div style="width: 30%" class="p-2 mx-1">
+                                    <label>Đơn giá</label>
+                                    <input type="text" name="donGia_${loop.index}" value="${o.donGia}">
+                                </div>
+                                <div style="width: 30%" class="p-2 mx-1">
+                                    <label>Số lượng</label>
+                                    <input type="text" name="soLuong_${loop.index}" value="${o.soLuong}">
+                                </div>
+                                <div style="width: 30%" class="p-2 mx-1">
+                                    <label>Trạng thái</label>
+                                    <select name="trangThai_${loop.index}">
+                                        <option ${(o.trangThai == 1)?"selected":""} value="1">Hoạt động</option>
+                                        <option ${(o.trangThai == 0)?"selected":""} value="0">Không hoạt động</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </c:forEach>
+
+                    <c:if test="${sizeExist != 0}">
+                        <%--List tồn tại--%>
+                        <h4 class="h5 text-danger">Danh sách biến thể đã tồn tại (không thêm mới)</h4>
+                        <c:forEach items="${listexist}" var="o">
+                            <div class="border shadow my-3 p-1 d-flex" style="color: darkgray">
                                 <div class="w-25 pb-2">
-                                    <div class="bg-warning">
+                                    <div class="p-1 mt-1">
                                         <label>Màu: ${o.mauSac}</label>
                                     </div>
-                                    <div class="bg-primary">
+                                    <div class="p-1 mt-1">
                                         <label>Kích thước: ${o.kichThuoc}</label>
                                     </div>
-                                    <input type="hidden" name="idMauSac_${loop.index}" value="${o.idMauSac}">
-                                    <input type="hidden" name="idKichThuoc_${loop.index}" value="${o.idKichThuoc}">
+                                    <input type="hidden"  value="${o.idMauSac}" disabled>
+                                    <input type="hidden"  value="${o.idKichThuoc}" disabled>
                                 </div>
                                 <div class="w-75 d-flex align-items-center">
                                     <div style="width: 30%" class="p-2 mx-1">
                                         <label>Đơn giá</label>
-                                        <input type="text" name="donGia_${loop.index}" value="${o.donGia}">
+                                        <input type="text" value="${o.donGia}" disabled>
                                     </div>
                                     <div style="width: 30%" class="p-2 mx-1">
                                         <label>Số lượng</label>
-                                        <input type="text" name="soLuong_${loop.index}" value="${o.soLuong}">
+                                        <input type="text" value="${o.soLuong}" disabled>
                                     </div>
                                     <div style="width: 30%" class="p-2 mx-1">
                                         <label>Trạng thái</label>
-                                        <select name="trangThai_${loop.index}">
+                                        <select disabled>
                                             <option ${(o.trangThai == 1)?"selected":""} value="1">Hoạt động</option>
                                             <option ${(o.trangThai == 0)?"selected":""} value="0">Không hoạt động</option>
                                         </select>
-
                                     </div>
                                 </div>
 
                             </div>
                         </c:forEach>
-                        <div class="mt-3 text-center">
-                            <button class="btn btn-success">Hoàn thành</button>
-                        </div>
-                    </form>
+                    </c:if>
+
+                    <div class="mt-3 text-center">
+                        <button class="btn btn-success">Hoàn thành</button>
+                    </div>
+
                 </form>
             </div>
 

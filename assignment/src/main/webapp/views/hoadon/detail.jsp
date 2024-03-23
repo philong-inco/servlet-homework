@@ -66,16 +66,16 @@
                     <div class="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa đơn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -112,8 +112,9 @@
                             <option class="text-secondary" value="">-- Lựa chọn --</option>
                             <option ${hd.trangThai == 1 ? "selected" : ""} class="text-success" value="1">Hoàn thành</option>
                             <option ${hd.trangThai == 0 ? "selected" : ""} class="text-danger" value="0">Đã hủy</option>
-                            <option ${hd.trangThai == 2 ? "selected" : ""} class="text-danger" value="0">Chờ giao</option>
-                            <option ${hd.trangThai == 3 ? "selected" : ""} class="text-danger" value="0">Đang giao</option>
+                            <option ${hd.trangThai == 2 ? "selected" : ""} class="text-secondary" value="2">Chờ giao</option>
+                            <option ${hd.trangThai == 3 ? "selected" : ""} class="text-warning" value="3">Đang giao</option>
+                            <option ${hd.trangThai == 4 ? "selected" : ""} class="text-primary" value="4">Chờ thanh toán</option>
                         </select>
                     </div>
                     <div class="mt-3">
@@ -140,22 +141,37 @@
                                     <td>${hdct.donGia}</td>
                                     <td>${hdct.soLuong}</td>
                                     <td>
+                                        <c:if test="${hdct.trangThai == 0}">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-danger border rounded me-2"
+                                                     style="width: 10px; height: 10px"></div>
+                                                <span class="text-danger" style="font-size: 14px">Trả hàng/Hoàn tiền</span>
+                                            </div>
+
+                                        </c:if>
                                         <c:if test="${hdct.trangThai == 1}">
                                             <div class="d-flex align-items-center">
                                                 <div class="bg-success border rounded me-2"
                                                      style="width: 10px; height: 10px"></div>
                                                 <span class="text-success "
-                                                      style="font-size: 14px">Hoạt động</span>
+                                                      style="font-size: 14px">Giao thành công</span>
                                             </div>
-
                                         </c:if>
-                                        <c:if test="${hdct.trangThai == 0}">
+                                        <c:if test="${hdct.trangThai == 2}">
                                             <div class="d-flex align-items-center">
-                                                <div class="bg-danger border rounded me-2"
+                                                <div class="bg-warning border rounded me-2"
                                                      style="width: 10px; height: 10px"></div>
-                                                <span class="text-danger" style="font-size: 14px">Không hoạt động</span>
+                                                <span class="text-warning "
+                                                      style="font-size: 14px">Đổi hàng</span>
                                             </div>
-
+                                        </c:if>
+                                        <c:if test="${hdct.trangThai == 3}">
+                                            <div class="d-flex align-items-center">
+                                                <div class="bg-primary border rounded me-2"
+                                                     style="width: 10px; height: 10px"></div>
+                                                <span class="text-primary"
+                                                      style="font-size: 14px">Đang xử lý</span>
+                                            </div>
                                         </c:if>
                                     </td>
                                 </tr>

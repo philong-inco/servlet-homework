@@ -61,16 +61,16 @@
                     <div class="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Sản phẩm</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Hóa đơn</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa đơn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Nhân viên</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân viên</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="#">Khách hàng</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -128,7 +128,7 @@
 
                         <td>
                             <a class="btn btn-sm btn-warning"
-                               href="/assignment_war_exploded/san-pham-chi-tiet/edit?id=${spct.id}&idSP=${sp.id}">Sửa</a>
+                               href="/assignment_war_exploded/san-pham-chi-tiet/edit?id=${spct.id}&idSP=${sp.id}&mess= "">Sửa</a>
                         </td>
                         <td>
                             <button onclick="deleteById(${spct.id}, ${sp.id})" class="btn btn-sm btn-danger">Xóa</button>

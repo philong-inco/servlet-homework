@@ -25,8 +25,8 @@ public class HoaDonResponseServiceImpl implements HoaDonResponseService {
     public List<HoaDonResponse> getAllResponse() {
         List<HoaDonResponse> list = new ArrayList<>();
         String query = "SELECT hd.id, kh.id, kh.ten, kh.sdt, nv.id, nv.ten, \n" +
-                "COUNT(hdct.so_luong) AS TongSanPham, \n" +
-                "SUM(hdct.don_gia * hdct.so_luong) AS TongTien,\n" +
+                "(SELECT SUM(so_luong) FROM hoa_don_chi_tiet WHERE id_hoa_don = hd.id AND trang_thai != 0) AS TongSanPham, \n" +
+                "(SELECT SUM(don_gia * so_luong) FROM hoa_don_chi_tiet WHERE id_hoa_don = hd.id AND trang_thai != 0) AS TongTien,\n" +
                 "hd.trang_thai, hd.ngay_mua_hang\n" +
                 "FROM hoa_don hd\n" +
                 "JOIN khach_hang kh ON hd.id_khach_hang=kh.id\n" +
@@ -96,8 +96,8 @@ public class HoaDonResponseServiceImpl implements HoaDonResponseService {
     @Override
     public HoaDonResponse findHoaDonResponeById(Long id) {
         String query = "SELECT hd.id, kh.id, kh.ten, kh.sdt, nv.id, nv.ten, \n" +
-                "COUNT(hdct.so_luong) AS TongSanPham, \n" +
-                "SUM(hdct.don_gia * hdct.so_luong) AS TongTien,\n" +
+                "(SELECT SUM(so_luong) FROM hoa_don_chi_tiet WHERE id_hoa_don = hd.id AND trang_thai != 0) AS TongSanPham, \n" +
+                "(SELECT SUM(don_gia * so_luong) FROM hoa_don_chi_tiet WHERE id_hoa_don = hd.id AND trang_thai != 0) AS TongTien,\n" +
                 "hd.trang_thai , hd.ngay_mua_hang\n" +
                 "FROM hoa_don hd\n" +
                 "JOIN khach_hang kh ON hd.id_khach_hang=kh.id\n" +
@@ -167,5 +167,45 @@ public class HoaDonResponseServiceImpl implements HoaDonResponseService {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public List<HoaDonResponse> findByTrangThai(Integer trangThai) {
+        List<HoaDonResponse> list = new ArrayList<>();
+        String query = "SELECT hd.id, kh.id, kh.ten, kh.sdt, nv.id, nv.ten, \n" +
+                "(SELECT SUM(so_luong) FROM hoa_don_chi_tiet WHERE id_hoa_don = hd.id AND trang_thai != 0) AS TongSanPham, \n" +
+                "(SELECT SUM(don_gia * so_luong) FROM hoa_don_chi_tiet WHERE id_hoa_don = hd.id AND trang_thai != 0) AS TongTien,\n" +
+                "hd.trang_thai, hd.ngay_mua_hang\n" +
+                "FROM hoa_don hd\n" +
+                "JOIN khach_hang kh ON hd.id_khach_hang=kh.id\n" +
+                "JOIN nhan_vien nv ON hd.id_nhan_vien=nv.id\n" +
+                "JOIN hoa_don_chi_tiet hdct ON hd.id=hdct.id_hoa_don\n" +
+                "GROUP BY hd.id, kh.ten, kh.sdt, nv.ten, hd.trang_thai, nv.id, kh.id\n" +
+                "HAVING hd.trang_thai = ?";
+
+        try (PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setInt(1, trangThai);
+            System.out.println("Query HD by TT: "+ps.toString());
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                HoaDonResponse hd = HoaDonResponse.getBuilder()
+                        .id(rs.getLong(1))
+                        .idKhachHang(rs.getLong(2))
+                        .tenKhachHang(rs.getString(3))
+                        .sdtKhachHang(rs.getString(4))
+                        .idNhanVien(rs.getLong(5))
+                        .tenNhanVien(rs.getString(6))
+                        .tongSanPham(rs.getInt(7))
+                        .tongTien(rs.getBigDecimal(8))
+                        .trangThai(rs.getInt(9))
+                        .ngayMuaHang(rs.getLong(10))
+                        .build();
+
+                list.add(hd);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return list;
     }
 }

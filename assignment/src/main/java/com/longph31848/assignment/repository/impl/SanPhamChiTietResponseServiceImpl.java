@@ -111,4 +111,37 @@ public class SanPhamChiTietResponseServiceImpl implements SanPhamChiTietResponse
 
         return list;
     }
+
+    @Override
+    public SanPhamChiTietResponse isExist(Long idSP, Long idMS, Long idKT) throws SQLException {
+        String query = "SELECT spct.id, spct.maspct, m.ten, kt.ten, spct.don_gia, spct.so_luong, spct.trang_thai, m.id, kt.id " +
+                " FROM san_pham_chi_tiet spct " +
+                " JOIN san_pham s ON spct.id_san_pham=s.id " +
+                " JOIN mau_sac m ON spct.id_mau_sac=m.id " +
+                " JOIN kich_thuoc kt ON spct.id_kich_thuoc=kt.id " +
+                " WHERE s.id = ? AND m.id = ? AND kt.id = ? ";
+        PreparedStatement ps = cn.prepareStatement(query);
+        ps.setLong(1, idSP);
+        ps.setLong(2, idMS);
+        ps.setLong(3, idKT);
+        System.out.println("IsExist query: " + ps.toString());
+        ResultSet rs = ps.executeQuery();
+        while (rs.next()) {
+            SanPhamChiTietResponse spct = SanPhamChiTietResponse.getBuilder()
+                    .id(rs.getLong(1))
+                    .maSPCT(rs.getString(2))
+                    .mauSac(rs.getString(3))
+                    .kichThuoc(rs.getString(4))
+                    .donGia(rs.getBigDecimal(5))
+                    .soLuong(rs.getInt(6))
+                    .trangThai(rs.getInt(7))
+                    .idMauSac(rs.getLong(8))
+                    .idKichThuoc(rs.getLong(9))
+                    .build();
+
+            return spct;
+        }
+
+        return null;
+    }
 }
