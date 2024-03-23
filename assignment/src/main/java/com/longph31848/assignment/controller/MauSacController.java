@@ -5,6 +5,7 @@ import com.longph31848.assignment.entity.KichThuoc;
 import com.longph31848.assignment.entity.MauSac;
 import com.longph31848.assignment.repository.MauSacService;
 import com.longph31848.assignment.repository.impl.MauSacServiceImpl;
+import com.longph31848.assignment.util.RenderMa;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -122,7 +123,10 @@ public class MauSacController extends HttpServlet {
 
     }
     public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        String ma = req.getParameter("ma");
+        String ma = "";
+        do {
+            ma = RenderMa.renderMa("MS", 6);
+        } while (service.isExistMa(ma));
         String ten = req.getParameter("ten");
         Integer trangThai = Integer.parseInt(req.getParameter("trangthai"));
         MauSac mauSac = MauSac.getBuilder()

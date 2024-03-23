@@ -10,6 +10,50 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            document.getElementById('main-form').addEventListener('submit', function (evt){
+                var isValid = true;
+                var mess = '';
+                var ten = document.getElementById('ten');
+                var trangThai = document.getElementById('trangThai');
+                var userName = document.getElementById('userName');
+                var matKhau = document.getElementById('matKhau');
+
+                // Ten validate
+                if (ten.value.trim() === ''){
+                    ten.classList.add('is-invalid');
+                    mess = 'Vui lòng điền tên';
+                    isValid = false;
+                } else {
+                    ten.classList.add('is-valid');
+                    ten.classList.remove('is-invalid');
+                }
+
+                if (ten.value.trim().length > 255){
+                    ten.classList.add('is-invalid');
+                    mess = 'Tên quá số ký tự (255)';
+                    isValid = false;
+                }
+
+                // TrangThai validate
+                if (trangThai.value.trim() === ''){
+                    trangThai.classList.add('is-invalid');
+                    mess = 'Vui lòng chọn trạng thái';
+                    isValid = false;
+                } else {
+                    trangThai.classList.add('is-valid');
+                    trangThai.classList.remove('is-invalid');
+                }
+
+                if (!isValid){
+                    evt.preventDefault();
+                    alert(mess);
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -63,6 +107,21 @@
                     </div>
                 </nav>
             </div>
+            <div class="mt-3 border-1 me-5 rounded shadow position-sticky" style="top: 80px;">
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" href="/assignment_war_exploded/kich-thuoc/list">Quản lý kích thước</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" href="/assignment_war_exploded/mau-sac/list">Quản lý màu sắc</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         </div>
         <div class="w-75  mt-3">
             <div class="d-flex justify-content-between mb-3">
@@ -70,22 +129,22 @@
                 <a href="#" class="btn btn-secondary m-1">Danh sách sản phẩm</a>
             </div>
             <div>
-                <form method="POST" action="/assignment_war_exploded/san-pham/update">
+                <form id="main-form" method="POST" action="/assignment_war_exploded/san-pham/update">
                     <div class="mt-3">
                         <label class="form-label">ID sản phẩm: ${sp.id}</label>
                         <input class="form-control" type="hidden" name="id" value="${sp.id}">
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Mã sản phẩm:</label>
-                        <input class="form-control" type="text" name="ma" value="${sp.ma}" placeholder="Nhập mã sản phẩm">
+                        <label class="form-label">Mã sản phẩm: ${sp.ma}</label>
+                        <input class="form-control" type="hidden" name="ma" value="${sp.ma}" placeholder="Nhập mã sản phẩm">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Tên sản phẩm:</label>
-                        <input class="form-control" type="text" name="ten" value="${sp.ten}" placeholder="Nhập tên sản phẩm">
+                        <input id="ten" class="form-control" type="text" name="ten" value="${sp.ten}" placeholder="Nhập tên sản phẩm">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Trạng thái:</label>
-                        <select class="form-control" name="trangthai" >
+                        <select id="trangThai" class="form-control" name="trangthai" >
                             <option class="text-secondary" value="">-- Lựa chọn --</option>
                             <option ${sp.trangThai == 1 ? "selected" : ""} class="text-success" value="1">Hoạt động</option>
                             <option ${sp.trangThai == 0 ? "selected" : ""} class="text-danger" value="0">Không hoạt động</option>

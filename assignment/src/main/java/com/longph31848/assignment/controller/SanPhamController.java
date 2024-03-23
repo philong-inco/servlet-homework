@@ -12,6 +12,7 @@ import com.longph31848.assignment.repository.impl.MauSacServiceImpl;
 import com.longph31848.assignment.repository.impl.SanPhamChiTietResponseServiceImpl;
 import com.longph31848.assignment.repository.impl.SanPhamServiceImpl;
 import com.longph31848.assignment.response.SanPhamChiTietResponse;
+import com.longph31848.assignment.util.RenderMa;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -146,7 +147,10 @@ public class SanPhamController extends HttpServlet {
     }
 
     public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        String ma = req.getParameter("ma");
+        String ma = "";
+        do {
+            ma = RenderMa.renderMa("SP", 6);
+        } while (service.isExistMa(ma));
         String ten = req.getParameter("ten");
         Integer trangThai = Integer.parseInt(req.getParameter("trangthai"));
         SanPham sanPham = SanPham.getBuilder()

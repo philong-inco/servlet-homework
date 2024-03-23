@@ -237,4 +237,19 @@ public class NhanVienServiceImpl implements NhanVienService {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isExistMa(String ma) {
+        String query = "SELECT manv FROM nhan_vien WHERE manv = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setString(1, ma);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

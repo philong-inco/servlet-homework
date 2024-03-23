@@ -225,4 +225,19 @@ public class KhachHangServiceImpl implements KhachHangService {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isExistMa(String ma) {
+        String query = "SELECT makh FROM khach_hang WHERE makh = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setString(1, ma);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

@@ -63,6 +63,21 @@
                     </div>
                 </nav>
             </div>
+            <div class="mt-3 border-1 me-5 rounded shadow position-sticky" style="top: 80px;">
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" href="/assignment_war_exploded/kich-thuoc/list">Quản lý kích thước</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" href="/assignment_war_exploded/mau-sac/list">Quản lý màu sắc</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         </div>
         <div class="w-75  mt-3">
             <div class="d-flex justify-content-between mb-3">

@@ -10,6 +10,68 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            document.getElementById('main-form').addEventListener('submit', function (evt){
+                var form = document.getElementById('main-form');
+                var isValid = true;
+                var mess = '';
+                // Validate click checkbox mau sac
+                var donGiaList = form.querySelectorAll('input[type="text"]');
+                var soLuongList = form.querySelectorAll('input[type="number"]');
+
+                donGiaList.forEach(function (donGia){
+                    console.log(donGia.name + ':' + donGia.value);
+                });
+
+                donGiaList.forEach(function (donGia){
+                    if (donGia.value.trim() === ''){
+                        isValid = false;
+                        mess = 'Vui lòng nhập đủ đơn giá';
+                        donGia.classList.add('is-invalid');
+                    } else if (isNaN(donGia.value) || donGia.value.charAt(0) === '.' ||donGia.value.charAt(donGia.value.length - 1) === '.'){
+                        isValid = false;
+                        mess = 'Đơn giá không hợp lệ';
+                        donGia.classList.add('is-invalid');
+                    } else if (parseFloat(donGia.value) <= 0){
+                        isValid = false;
+                        mess = 'Đơn giá phải lớn hơn 0';
+                        donGia.classList.add('is-invalid');
+                    } else {
+                        donGia.classList.add('is-valid');
+                        donGia.classList.remove('is-invalid');
+                    }
+                });
+
+                soLuongList.forEach(function (soLuong){
+                    if (soLuong.value.trim() === ''){
+                        isValid = false;
+                        mess = 'Vui lòng nhập đủ số lượng';
+                        soLuong.classList.add('is-invalid');
+                    } else if (isNaN(soLuong.value)){
+                        isValid = false;
+                        mess = 'Số lượng không hợp lệ';
+                        soLuong.classList.add('is-invalid');
+                    } else if (parseFloat(soLuong.value) < 0){
+                        isValid = false;
+                        mess = 'Số lượng tối thiểu phải bằng 0';
+                        soLuong.classList.add('is-invalid');
+                    } else {
+                        soLuong.classList.add('is-valid');
+                        soLuong.classList.remove('is-invalid');
+                    }
+                });
+
+                console.log('isValid: ' + isValid);
+                console.log('mess: ' + mess);
+                if(!isValid){
+                    evt.preventDefault();
+                    alert(mess);
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -63,6 +125,21 @@
                     </div>
                 </nav>
             </div>
+            <div class="mt-3 border-1 me-5 rounded shadow position-sticky" style="top: 80px;">
+                <nav class="navbar bg-light">
+                    <div class="container-fluid">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" href="/assignment_war_exploded/kich-thuoc/list">Quản lý kích thước</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-warning fw-bold" href="/assignment_war_exploded/mau-sac/list">Quản lý màu sắc</a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         </div>
         <div class="w-75  mt-3">
             <div class="d-flex justify-content-between mb-3">
@@ -70,7 +147,7 @@
                 <a href="/assignment_war_exploded/san-pham/list" class="btn btn-secondary m-1">Danh sách sản phẩm</a>
             </div>
             <div>
-                <form method="POST" action="/assignment_war_exploded/san-pham-chi-tiet/store">
+                <form id="main-form" method="POST" action="/assignment_war_exploded/san-pham-chi-tiet/store">
                     <div class="mt-3">
                         <label class="form-label">Tên sản phẩm: <span class="text-danger">${sp.ten}</span></label>
                         <input class="form-control" type="hidden" name="idSP" value="${sp.id}">
@@ -97,7 +174,7 @@
                                 </div>
                                 <div style="width: 30%" class="p-2 mx-1">
                                     <label>Số lượng</label>
-                                    <input type="text" name="soLuong_${loop.index}" value="${o.soLuong}">
+                                    <input type="number" name="soLuong_${loop.index}" value="${o.soLuong}">
                                 </div>
                                 <div style="width: 30%" class="p-2 mx-1">
                                     <label>Trạng thái</label>
@@ -112,6 +189,12 @@
                         </div>
                     </c:forEach>
 
+                    <div class="mt-3 text-center">
+                        <button class="btn btn-success">Hoàn thành</button>
+                    </div>
+                </form>
+
+                <div>
                     <c:if test="${sizeExist != 0}">
                         <%--List tồn tại--%>
                         <h4 class="h5 text-danger">Danh sách biến thể đã tồn tại (không thêm mới)</h4>
@@ -148,12 +231,7 @@
                             </div>
                         </c:forEach>
                     </c:if>
-
-                    <div class="mt-3 text-center">
-                        <button class="btn btn-success">Hoàn thành</button>
-                    </div>
-
-                </form>
+                </div>
             </div>
 
         </div>

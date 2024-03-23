@@ -68,9 +68,10 @@ public class HoaDonServiceImpl implements HoaDonService {
             while (rs.next()){
                 HoaDon hoaDon = HoaDon.getBuilder()
                         .withTrangThai(rs.getInt(1))
-                        .withIdKhachHang(rs.getLong(2))
-                        .withIdNhanVien(rs.getLong(3))
-                        .withNgayMuaHang(rs.getLong(4))
+                        .withId(rs.getLong(2))
+                        .withIdKhachHang(rs.getLong(3))
+                        .withIdNhanVien(rs.getLong(4))
+                        .withNgayMuaHang(rs.getLong(5))
                         .build();
                 return hoaDon;
             }
@@ -120,6 +121,7 @@ public class HoaDonServiceImpl implements HoaDonService {
             ps.setLong(2, hoaDon.getIdNhanVien());
             ps.setLong(3, hoaDon.getTrangThai());
             ps.setLong(4, hoaDon.getId());
+            System.out.println("Query update HD: " + ps.toString());
             ps.executeUpdate();
             return findById(hoaDon.getId());
         } catch (Exception ex){

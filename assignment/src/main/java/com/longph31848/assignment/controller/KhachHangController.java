@@ -5,6 +5,7 @@ import com.longph31848.assignment.entity.KhachHang;
 import com.longph31848.assignment.entity.KichThuoc;
 import com.longph31848.assignment.repository.KhachHangService;
 import com.longph31848.assignment.repository.impl.KhachHangServiceImpl;
+import com.longph31848.assignment.util.RenderMa;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -121,7 +122,10 @@ public class KhachHangController extends HttpServlet {
         resp.sendRedirect("/assignment_war_exploded/khach-hang/list");
     }
     public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        String ma = req.getParameter("ma");
+        String ma = "";
+        do {
+            ma = RenderMa.renderMa("KH", 6);
+        } while (service.isExistMa(ma));
         String ten = req.getParameter("ten");
         String sdt = req.getParameter("sdt");
         Integer trangThai = Integer.parseInt(req.getParameter("trangthai"));

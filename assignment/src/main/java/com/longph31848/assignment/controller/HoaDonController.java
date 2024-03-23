@@ -166,6 +166,7 @@ public class HoaDonController extends HttpServlet {
     public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         Long idHD = Long.parseLong(req.getParameter("id"));
         HoaDon hoaDonOld = service.findById(idHD);
+        System.out.println("HD Old: " + hoaDonOld.toString());
         Long idKH = hoaDonOld.getIdKhachHang();
         Long idNV = hoaDonOld.getIdNhanVien();
         Integer trangThai = hoaDonOld.getTrangThai();

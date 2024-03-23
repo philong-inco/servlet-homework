@@ -215,4 +215,19 @@ public class KichThuocServiceImpl implements KichThuocService {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isExistMa(String ma) {
+        String query = "SELECT ma FROM kich_thuoc WHERE ma = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setString(1, ma);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

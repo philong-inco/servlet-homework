@@ -4,5 +4,5 @@ import com.longph31848.assignment.entity.KichThuoc;
 
 public interface KichThuocService extends Service<KichThuoc> {
 
-
+    boolean isExistMa(String ma);
 }

@@ -216,4 +216,19 @@ public class MauSacServiceImpl implements MauSacService {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isExistMa(String ma) {
+        String query = "SELECT ma FROM mau_sac WHERE ma = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setString(1, ma);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

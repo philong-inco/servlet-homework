@@ -216,4 +216,19 @@ public class SanPhamServiceImpl implements SanPhamService {
             ex.printStackTrace();
         }
     }
+
+    @Override
+    public boolean isExistMa(String ma) {
+        String query = "SELECT ma FROM san_pham WHERE ma = ?";
+        try(PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setString(1, ma);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()){
+                return true;
+            }
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        return false;
+    }
 }

@@ -17,6 +17,95 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            document.getElementById('main-form').addEventListener('submit', function (evt){
+                var isValid = true;
+                var mess = '';
+                var donGia = document.getElementById('donGia');
+                var trangThai = document.getElementById('trangThai');
+                var soLuong = document.getElementById('soLuong');
+
+                // Đơn giá validate
+                if (donGia.value.trim() === '') {
+                    donGia.classList.add('is-invalid');
+                    mess = 'Vui lòng điền giá';
+                    isValid = false;
+                }
+                else if(isNaN(donGia.value) ||donGia.value.charAt(0) === '.' ||donGia.value.charAt(donGia.value.length - 1) === '.'){
+                    donGia.classList.add('is-invalid');
+                    mess = 'Giá không hợp lệ';
+                    isValid = false;
+                }
+                else if(parseFloat(donGia.value) < 0){
+                    donGia.classList.add('is-invalid');
+                    mess = 'Giá không nhỏ hơn 0';
+                    isValid = false;
+                } else {
+                    donGia.classList.add('is-valid');
+                    donGia.classList.remove('is-invalid');
+                }
+
+                // Số lượng validate
+                if (soLuong.value.trim() === '') {
+                    soLuong.classList.add('is-invalid');
+                    mess = 'Vui lòng điền số lượng';
+                    isValid = false;
+                }
+                else if(isNaN(soLuong.value)){
+                    soLuong.classList.add('is-invalid');
+                    mess = 'Số lượng không hợp lệ';
+                    isValid = false;
+                }
+                else if(parseFloat(soLuong.value) % 1 != 0){
+                    console.log('Result: ' + parseFloat(soLuong) % 1 != 0)
+                    soLuong.classList.add('is-invalid');
+                    mess = 'Số lượng phải là số nguyên';
+                    isValid = false;
+                }
+                else if(parseFloat(soLuong.value) < 0){
+                    soLuong.classList.add('is-invalid');
+                    mess = 'Số lượng không nhỏ hơn 0';
+                    isValid = false;
+                }else {
+                    soLuong.classList.add('is-valid');
+                    soLuong.classList.remove('is-invalid');
+                }
+
+                //Trang thai validate
+                // TrangThai validate
+                if (trangThai.value.trim() === '') {
+                    trangThai.classList.add('is-invalid');
+                    mess = 'Vui lòng chọn trạng thái';
+                    isValid = false;
+                } else {
+                    trangThai.classList.add('is-valid');
+                    trangThai.classList.remove('is-invalid');
+                }
+
+                // Validate click radio san pham
+                var radioSanPham = document.querySelectorAll('input[name="idSPCT"]');
+                var checked = false;
+                radioSanPham.forEach(function (radio){
+                    if (radio.checked){
+                        checked = true;
+                    }
+                });
+
+                if (!checked){
+                    mess = 'Hãy chọn sản phẩm trước khi tạo hóa đơn';
+                    isValid = false;
+                }
+
+                console.log('isValid: ' + isValid);
+                console.log('mess: ' + mess);
+                if(!isValid){
+                    evt.preventDefault();
+                    alert(mess);
+                }
+            });
+        });
+
+
         function deleteById(id) {
             if (confirm("Bạn chắc chắn xóa bản ghi này?")) {
                 window.location.href = "http://localhost:8080/assignment_war_exploded/hoa-don-chi-tiet/delete?id=" + id;
@@ -148,32 +237,35 @@
             </div>
             <div class="mt-3">
                 <h3 class="h4">Thêm sản phẩm vào hóa đơn:</h3>
-                <form action="/assignment_war_exploded/hoa-don-chi-tiet/store" method="POST">
+                <form id="main-form" action="/assignment_war_exploded/hoa-don-chi-tiet/store" method="POST">
                     <div class="mt-3">
                         <label class="form-label">ID Hóa đơn: ${id}</label>
                         <input class="form-control" type="hidden" name="idHD" value="${id}">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Đơn giá</label>
-                        <input class="form-control" type="text" name="dongia">
+                        <input id="donGia" class="form-control" type="text" name="dongia">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Số lượng</label>
-                        <input class="form-control" type="text" name="soluong">
+                        <input id="soLuong" class="form-control" type="number" name="soluong">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Trạng thái</label>
-                        <select class="form-control" name="trangthai" class="form-label">
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Không hoạt động</option>
+                        <select id="trangThai" class="form-control" name="trangthai" class="form-label">
+                            <option value="">-- Lựa chọn --</option>
+                            <option value="0">Trả hàng/Hoàn tiền</option>
+                            <option value="1">Giao thành công</option>
+                            <option value="2">Đổi hàng</option>
+                            <option value="3">Đang xử lý</option>
                         </select>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Sản phẩm:</label>
-                        <div class="p-2 d-inline-block bg-primary" onclick="visableHDCT()">Chọn sản phẩm</div>
+                        <label class="form-label me-3">Sản phẩm:</label>
+                        <div style="background: darksalmon; cursor: pointer;" class="p-2 d-inline-block border rounded" onclick="visableHDCT()">Chọn sản phẩm</div>
                         <%--Danh sách sản phẩm--%>
                         <div class="border border-danger rounded shadow bg-light" id="divHDCT"
-                             style="display: none; position: absolute; bottom: 0px; right: 20px; z-index: 9999; max-height: 700px; overflow-y: auto;">
+                             style="display: none; position: absolute; bottom: 0px; right: 20px; z-index: 9999; max-height: 300px; overflow-y: auto;">
                             <table class="table table-striped">
                                 <thead>
                                 <tr>

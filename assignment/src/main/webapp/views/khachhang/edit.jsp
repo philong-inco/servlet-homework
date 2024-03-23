@@ -10,6 +10,74 @@
     <title>Document</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('main-form').addEventListener('submit', function (evt) {
+                var isValid = true;
+                var mess = '';
+                var ten = document.getElementById('ten');
+                var trangThai = document.getElementById('trangThai');
+                var sdt = document.getElementById('sdt');
+
+                // Ten validate
+                if (ten.value.trim() === '') {
+                    ten.classList.add('is-invalid');
+                    mess = 'Vui lòng điền tên';
+                    isValid = false;
+                } else {
+                    ten.classList.add('is-valid');
+                    ten.classList.remove('is-invalid');
+                }
+
+                if (ten.value.trim().length > 255) {
+                    ten.classList.add('is-invalid');
+                    mess = 'Tên quá số ký tự (255)';
+                    isValid = false;
+                }
+
+                //SDT validate
+                if (sdt.value.trim() === '') {
+                    sdt.classList.add('is-invalid');
+                    mess = 'Vui lòng điền SDT';
+                    isValid = false;
+                } else {
+                    sdt.classList.add('is-valid');
+                    sdt.classList.remove('is-invalid');
+                }
+                if (isNaN(sdt.value.trim())){
+                    sdt.classList.add('is-invalid');
+                    mess = 'SDT không hợp lệ';
+                    isValid = false;
+                }
+                if (sdt.value.trim().length > 11){
+                    sdt.classList.add('is-invalid');
+                    mess = 'SDT chỉ từ 0-11 ký tự';
+                    isValid = false;
+                }
+                if (sdt.value.trim().includes(' ')){
+                    sdt.classList.add('is-invalid');
+                    mess = 'SDT không chứa dấu cách';
+                    isValid = false;
+                }
+
+                // TrangThai validate
+                if (trangThai.value.trim() === '') {
+                    trangThai.classList.add('is-invalid');
+                    mess = 'Vui lòng chọn trạng thái';
+                    isValid = false;
+                } else {
+                    trangThai.classList.add('is-valid');
+                    trangThai.classList.remove('is-invalid');
+                }
+                console.log('isValid: ' + isValid);
+                if (!isValid) {
+                    evt.preventDefault();
+                    alert(mess);
+                }
+            });
+        });
+    </script>
 </head>
 
 <body>
@@ -70,26 +138,26 @@
                 <a href="/assignment_war_exploded/khach-hang/list" class="btn btn-secondary m-1">Danh sách khách hàng</a>
             </div>
             <div>
-                <form method="POST" action="/assignment_war_exploded/khach-hang/update">
+                <form id="main-form" method="POST" action="/assignment_war_exploded/khach-hang/update">
                     <div class="mt-3">
                         <label class="form-label">ID khách hàng: ${kh.id}</label>
                         <input class="form-control" type="hidden" name="id" value="${kh.id}">
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Mã khách hàng:</label>
-                        <input class="form-control" type="text" name="ma" value="${kh.maKH}" placeholder="Nhập mã khách hàng">
+                        <label class="form-label">Mã khách hàng: ${kh.maKH}</label>
+                        <input class="form-control" type="hidden" name="ma" value="${kh.maKH}" placeholder="Nhập mã khách hàng">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Tên khách hàng:</label>
-                        <input class="form-control" type="text" name="ten" value="${kh.ten}" placeholder="Nhập tên khách hàng">
+                        <input id="ten" class="form-control" type="text" name="ten" value="${kh.ten}" placeholder="Nhập tên khách hàng">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">SĐT khách hàng:</label>
-                        <input class="form-control" type="text" name="sdt" value="${kh.sdt}" placeholder="Nhập số điện thoại">
+                        <input id="sdt" class="form-control" type="text" name="sdt" value="${kh.sdt}" placeholder="Nhập số điện thoại">
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Trạng thái:</label>
-                        <select class="form-control" name="trangthai" >
+                        <select id="trangThai" class="form-control" name="trangthai" >
                             <option class="text-secondary" value="">-- Lựa chọn --</option>
                             <option ${kh.trangThai == 1 ? "selected" : ""} class="text-success" value="1">Hoạt động</option>
                             <option ${kh.trangThai == 0 ? "selected" : ""} class="text-danger" value="0">Không hoạt động</option>

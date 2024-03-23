@@ -4,6 +4,7 @@ import com.longph31848.assignment.db.DataBaseConnection;
 import com.longph31848.assignment.entity.NhanVien;
 import com.longph31848.assignment.repository.NhanVienService;
 import com.longph31848.assignment.repository.impl.NhanVienServiceImpl;
+import com.longph31848.assignment.util.RenderMa;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -125,7 +126,10 @@ public class NhanVienController extends HttpServlet {
 
     }
     public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
-        String ma = req.getParameter("ma");
+        String ma = "";
+        do {
+            ma = RenderMa.renderMa("NV", 6);
+        } while (service.isExistMa(ma));
         String ten = req.getParameter("ten");
         String username = req.getParameter("username");
         String matkhau = req.getParameter("matkhau");
