@@ -48,7 +48,7 @@
 <body>
 <div>
     <!-- Header -->
-    <div class="bg-danger container-fluid position-sticky top-0">
+    <div class="bg-danger container-fluid position-sticky top-0" style="z-index: 9999999;">
         <div class="container d-flex py-3">
             <!-- Logo -->
             <div class="w-25 text-light h3">
@@ -95,20 +95,21 @@
                         </ul>
                     </div>
                 </nav>
+                <div class="p-2" style="background: antiquewhite">
+                    <form action="/assignment_war_exploded/hoa-don/list" method="GET">
+                        <label class="form-label fw-bold">Lọc trạng thái HĐ:</label>
+                        <select name="tt" class="form-control">
+                            <option class="text-danger" value="0">Đã hủy</option>
+                            <option class="text-success" value="1">Hoàn thành</option>
+                            <option class="text-secondary" value="2">Chờ giao</option>
+                            <option class="text-warning" value="3">Đang giao</option>
+                            <option class="text-primary" value="4">Chờ thanh toán</option>
+                        </select>
+                        <button class="btn text-center d-inline-block mt-2" style="background: indianred">Lọc</button>
+                    </form>
+                </div>
             </div>
-            <div class="mt-3 pe-5">
-                <form action="/assignment_war_exploded/hoa-don/list" method="GET">
-                    <label class="form-label fw-bold">Lọc trạng thái HĐ:</label>
-                    <select name="tt" class="form-control">
-                        <option class="text-danger" value="0">Đã hủy</option>
-                        <option class="text-success" value="1">Hoàn thành</option>
-                        <option class="text-secondary" value="2">Chờ giao</option>
-                        <option class="text-warning" value="3">Đang giao</option>
-                        <option class="text-primary" value="4">Chờ thanh toán</option>
-                    </select>
-                    <button class="btn btn-primary text-center d-inline-block mt-2">Lọc</button>
-                </form>
-            </div>
+
         </div>
         <div class="w-75  mt-3">
             <div class="d-flex justify-content-between mb-3">
@@ -137,7 +138,12 @@
                         <td>${ hd.tenNhanVien }</td>
                         <td>${ hd.tongSanPham }</td>
                         <td>${ hd.tongTien }</td>
-                        <td>${hd.ngayMuaHang}</td>
+                        <td style="min-width: 120px">
+                            <script>
+                                var date = new Date(${hd.ngayMuaHang});
+                                document.write(date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear());
+                            </script>
+                        </td>
                         <td>
                             <c:if test="${hd.trangThai == 0}">
                                 <div class="d-flex align-items-center">

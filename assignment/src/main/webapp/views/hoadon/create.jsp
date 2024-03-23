@@ -11,6 +11,68 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function (){
+            document.getElementById('main-form').addEventListener('submit', function (evt){
+                var divKhachHang = document.getElementById('divkhachhang');
+                var divNhanVien = document.getElementById('divnhanvien');
+                var divSPCT = document.getElementById('divSPCT');
+                var trangThai = document.getElementById('trangThai');
+
+                var isValid = true;
+                var mess = '';
+
+                var khachHangList = divKhachHang.querySelectorAll('input[name="idKH"]');
+                var nhanVienList = divNhanVien.querySelectorAll('input[name="idNV"]');
+                var spctList = divSPCT.querySelectorAll('input[type="number"]');
+
+                var checked = false;
+                if (trangThai.value === ''){
+                    isValid = false;
+                    mess = 'Vui lòng chọn trạng thái';
+                    trangThai.classList.add('is-invalid');
+                } else {
+                    khachHangList.forEach(function (kh){
+                        if (kh.checked){
+                            checked = true;
+                        }
+                    });
+                    if (!checked){
+                        isValid = false;
+                        mess = 'Vui lòng chọn khách hàng \n';
+                    }
+
+                    checked = false;
+                    nhanVienList.forEach(function (nv){
+                        if (nv.checked){
+                            checked = true;
+                        }
+                    });
+
+                    if (!checked){
+                        isValid = false;
+                        mess += 'Vui lòng chọn nhân viên \n';
+                    }
+
+                    checked = false;
+                    spctList.forEach(function (spct){
+                        if (parseInt(spct.value) != 0){
+                            checked = true;
+                        }
+                    });
+                    if (!checked){
+                        isValid = false;
+                        mess += 'Vui lòng chọn tối thiểu 1 sản phẩm \n';
+                    }
+                }
+
+                if (!isValid){
+                    evt.preventDefault();
+                    alert(mess);
+                }
+
+            });
+        });
+
         function visiableNhanVien() {
             var divNV = document.getElementById("divnhanvien");
             divNV.style.display = (divNV.style.display === "none") ? "block" : "none";
@@ -54,44 +116,13 @@
             }
         }
 
-        // Add sự kiện lắng nghe vào form
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     var form = document.getElementById("main-form");
-        //     form.addEventListener('submit', function(event) {
-        //         validateForm(event);
-        //     });
-        // });
-
-
-        function validateForm(event) {
-            // Lấy ra các input cần kiểm tra
-            var inputKH = document.querySelectorAll('input[type="text"], input[type="number"], select');
-
-            // Biến để kiểm tra xem có lỗi không
-            var hasError = false;
-
-            // Kiểm tra từng input
-            inputs.forEach(function(input) {
-                // Kiểm tra nếu input là bắt buộc và trống
-                if (input.required && !input.value.trim()) {
-                    alert('Vui lòng điền đầy đủ thông tin.');
-                    hasError = true;
-                }
-                // Các điều kiện kiểm tra khác nếu cần
-            });
-
-            // Nếu có lỗi, ngăn chặn việc gửi form
-            if (hasError) {
-                event.preventDefault();
-            }
-        }
     </script>
 </head>
 
 <body>
 <div>
     <!-- Header -->
-    <div class="bg-danger container-fluid position-sticky top-0">
+    <div class="bg-danger container-fluid position-sticky top-0" style="z-index: 9999999;">
         <div class="container d-flex py-3">
             <!-- Logo -->
             <div class="w-25 text-light h3">
@@ -212,7 +243,7 @@
 
                     <div class="mt-3">
                         <label class="form-label">Trạng thái:</label>
-                        <select class="form-control" name="trangthai">
+                        <select id="trangThai" class="form-control" name="trangthai">
                             <option class="text-secondary" value="">-- Lựa chọn --</option>
                             <option class="text-success" value="1">Hoàn thành</option>
                             <option class="text-danger" value="0">Đã hủy</option>

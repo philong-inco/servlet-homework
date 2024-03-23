@@ -153,7 +153,14 @@
                         <label class="form-label">Tổng sản phẩm: <span
                                 class="fw-bold">${hd.tongSanPham}</span></label><br>
                         <label class="form-label">Tổng tiền: <span class="fw-bold">${hd.tongTien}</span></label><br>
-                        <label class="form-label">Ngày mua hàng: <span class="fw-bold">${hd.ngayMuaHang}</span></label>
+                        <label class="form-label">Ngày mua hàng:
+                            <span class="fw-bold">
+                                <script>
+                                    var date = new Date(${hd.ngayMuaHang});
+                                    document.write(date.getDate() + '-' + (date.getMonth()+1) + '-' + date.getFullYear());
+                                </script>
+                            </span>
+                        </label>
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Trạng thái:</label>

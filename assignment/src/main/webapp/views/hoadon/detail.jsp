@@ -66,16 +66,20 @@
                     <div class="container-fluid">
                         <ul class="navbar-nav">
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản phẩm</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/san-pham/list">Sản
+                                    phẩm</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa đơn</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/hoa-don/list">Hóa
+                                    đơn</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân viên</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/nhan-vien/list">Nhân
+                                    viên</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách hàng</a>
+                                <a class="nav-link text-dark fw-bold" href="/assignment_war_exploded/khach-hang/list">Khách
+                                    hàng</a>
                             </li>
                         </ul>
                     </div>
@@ -95,26 +99,40 @@
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Khách hàng:</label>
-                        <input class="form-control" type="text" name="kh" value="${hd.tenKhachHang} (${hd.sdtKhachHang})" disabled>
+                        <input class="form-control" type="text" name="kh"
+                               value="${hd.tenKhachHang} (${hd.sdtKhachHang})" disabled>
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Tên nhân viên:</label>
                         <input class="form-control" type="text" name="nv" value="${hd.tenNhanVien}" disabled>
                     </div>
                     <div class="mt-3">
-                        <label class="form-label">Tổng sản phẩm: <span class="fw-bold">${hd.tongSanPham}</span></label><br>
+                        <label class="form-label">Tổng sản phẩm: <span
+                                class="fw-bold">${hd.tongSanPham}</span></label><br>
                         <label class="form-label">Tổng tiền: <span class="fw-bold">${hd.tongTien}</span></label><br>
-                        <label class="form-label">Ngày mua hàng: <span class="fw-bold">${hd.ngayMuaHang}</span></label>
+                        <label class="form-label">Ngày mua hàng:
+                            <span class="fw-bold">
+                                <script>
+                                    var date = new Date(${hd.ngayMuaHang});
+                                    document.write(date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear());
+                                </script>
+                            </span>
+                        </label>
                     </div>
                     <div class="mt-3">
                         <label class="form-label">Trạng thái:</label>
                         <select class="form-control" name="trangthai" disabled>
                             <option class="text-secondary" value="">-- Lựa chọn --</option>
-                            <option ${hd.trangThai == 1 ? "selected" : ""} class="text-success" value="1">Hoàn thành</option>
+                            <option ${hd.trangThai == 1 ? "selected" : ""} class="text-success" value="1">Hoàn thành
+                            </option>
                             <option ${hd.trangThai == 0 ? "selected" : ""} class="text-danger" value="0">Đã hủy</option>
-                            <option ${hd.trangThai == 2 ? "selected" : ""} class="text-secondary" value="2">Chờ giao</option>
-                            <option ${hd.trangThai == 3 ? "selected" : ""} class="text-warning" value="3">Đang giao</option>
-                            <option ${hd.trangThai == 4 ? "selected" : ""} class="text-primary" value="4">Chờ thanh toán</option>
+                            <option ${hd.trangThai == 2 ? "selected" : ""} class="text-secondary" value="2">Chờ giao
+                            </option>
+                            <option ${hd.trangThai == 3 ? "selected" : ""} class="text-warning" value="3">Đang giao
+                            </option>
+                            <option ${hd.trangThai == 4 ? "selected" : ""} class="text-primary" value="4">Chờ thanh
+                                toán
+                            </option>
                         </select>
                     </div>
                     <div class="mt-3">
@@ -145,7 +163,8 @@
                                             <div class="d-flex align-items-center">
                                                 <div class="bg-danger border rounded me-2"
                                                      style="width: 10px; height: 10px"></div>
-                                                <span class="text-danger" style="font-size: 14px">Trả hàng/Hoàn tiền</span>
+                                                <span class="text-danger"
+                                                      style="font-size: 14px">Trả hàng/Hoàn tiền</span>
                                             </div>
 
                                         </c:if>

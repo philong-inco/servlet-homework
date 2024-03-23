@@ -32,7 +32,8 @@ public class HoaDonResponseServiceImpl implements HoaDonResponseService {
                 "JOIN khach_hang kh ON hd.id_khach_hang=kh.id\n" +
                 "JOIN nhan_vien nv ON hd.id_nhan_vien=nv.id\n" +
                 "JOIN hoa_don_chi_tiet hdct ON hd.id=hdct.id_hoa_don\n" +
-                "GROUP BY hd.id, kh.ten, kh.sdt, nv.ten, hd.trang_thai, nv.id, kh.id";
+                "GROUP BY hd.id, kh.ten, kh.sdt, nv.ten, hd.trang_thai, nv.id, kh.id, hd.ngay_mua_hang\n" +
+                "ORDER BY hd.ngay_mua_hang DESC";
 
         try (PreparedStatement ps = cn.prepareStatement(query);
              ResultSet rs = ps.executeQuery();) {
