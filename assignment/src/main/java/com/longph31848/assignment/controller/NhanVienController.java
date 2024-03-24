@@ -10,6 +10,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -26,15 +27,12 @@ import java.util.List;
         "/nhan-vien/update",
 })
 public class NhanVienController extends HttpServlet {
-
-    private Connection connection;
     private NhanVienService service;
     private List<NhanVien> list;
 
     @Override
     public void init() {
         try {
-            connection = DataBaseConnection.getConnection();
             service = new NhanVienServiceImpl();
             list = service.getAll();
         } catch (Exception ex) {
@@ -45,6 +43,10 @@ public class NhanVienController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            if (req.getSession(false).getAttribute("account") == null){
+                resp.sendRedirect("/assignment_war_exploded/login");
+                return;
+            }
             String uri = req.getRequestURI();
             if (uri.contains("create")) {
                 this.create(req, resp);
@@ -67,6 +69,10 @@ public class NhanVienController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            if (req.getSession(false).getAttribute("account") == null){
+                resp.sendRedirect("/assignment_war_exploded/login");
+                return;
+            }
             String uri = req.getRequestURI();
             if (uri.contains("update")) {
                 this.update(req, resp);

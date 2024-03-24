@@ -45,7 +45,7 @@
     </script>
 </head>
 
-<body>
+<body class="positon-relative">
 <div>
     <!-- Header -->
     <div class="bg-danger container-fluid position-sticky top-0" style="z-index: 9999999;">
@@ -67,10 +67,11 @@
                 <a href="#" class="text-decoration-none text-light d-inline-block mt-2">Giỏ hàng</a>
             </div>
         </div>
-        <!-- Navbar -->
-        <div>
-
-        </div>
+    </div>
+    <div class="position-fixed bottom-0 text-end text-warning" style="z-index: 999999; right: 0;">
+        <c:if test="${account != null}">
+            <span class="p-2 pb-3 bg-dark text-warning" style="border-top-left-radius: 10px">Chào, ${account.ten}</span>
+        </c:if>
     </div>
 
     <!-- Body -->

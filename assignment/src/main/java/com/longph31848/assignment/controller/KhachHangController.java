@@ -3,6 +3,7 @@ package com.longph31848.assignment.controller;
 import com.longph31848.assignment.db.DataBaseConnection;
 import com.longph31848.assignment.entity.KhachHang;
 import com.longph31848.assignment.entity.KichThuoc;
+import com.longph31848.assignment.entity.NhanVien;
 import com.longph31848.assignment.repository.KhachHangService;
 import com.longph31848.assignment.repository.impl.KhachHangServiceImpl;
 import com.longph31848.assignment.util.RenderMa;
@@ -11,6 +12,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -27,15 +29,12 @@ import java.util.List;
         "/khach-hang/update",
 })
 public class KhachHangController extends HttpServlet {
-
-
     private KhachHangService service;
     private List<KhachHang> list;
 
     @Override
     public void init() {
         try {
-
             service = new KhachHangServiceImpl();
             list = service.getAll();
         } catch (Exception ex) {
@@ -46,6 +45,10 @@ public class KhachHangController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            if (req.getSession(false).getAttribute("account") == null){
+                resp.sendRedirect("/assignment_war_exploded/login");
+                return;
+            }
             String uri = req.getRequestURI();
             if (uri.contains("create")) {
                 this.create(req, resp);
@@ -68,6 +71,10 @@ public class KhachHangController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            if (req.getSession(false).getAttribute("account") == null){
+                resp.sendRedirect("/assignment_war_exploded/login");
+                return;
+            }
             String uri = req.getRequestURI();
             if (uri.contains("update")) {
                 this.update(req, resp);
@@ -78,31 +85,37 @@ public class KhachHangController extends HttpServlet {
             ex.printStackTrace();
         }
     }
+
     public void list(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         list = service.getAll();
         req.setAttribute("khachhanglist", list);
         req.getRequestDispatcher("/views/khachhang/list.jsp").forward(req, resp);
     }
+
     public void create(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/views/khachhang/create.jsp").forward(req, resp);
     }
+
     public void edit(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         Long id = Long.parseLong(req.getParameter("id"));
         KhachHang khachHangq = service.findById(id);
         req.setAttribute("kh", khachHangq);
         req.getRequestDispatcher("/views/khachhang/edit.jsp").forward(req, resp);
     }
+
     public void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         Long id = Long.parseLong(req.getParameter("id"));
         service.delete(id);
         resp.sendRedirect("/assignment_war_exploded/khach-hang/list");
     }
+
     public void detail(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         Long id = Long.parseLong(req.getParameter("id"));
         KhachHang khachHang = service.findById(id);
         req.setAttribute("kh", khachHang);
         req.getRequestDispatcher("/views/khachhang/detail.jsp").forward(req, resp);
     }
+
     public void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         String idS = req.getParameter("id");
         Long id = Long.parseLong(idS);
@@ -121,6 +134,7 @@ public class KhachHangController extends HttpServlet {
 
         resp.sendRedirect("/assignment_war_exploded/khach-hang/list");
     }
+
     public void store(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, SQLException {
         String ma = "";
         do {

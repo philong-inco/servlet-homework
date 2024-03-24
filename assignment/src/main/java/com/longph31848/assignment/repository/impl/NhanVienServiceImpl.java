@@ -252,4 +252,30 @@ public class NhanVienServiceImpl implements NhanVienService {
         }
         return false;
     }
+
+    @Override
+    public NhanVien findByUserNameAndMatKhau(String username, String password) throws SQLException {
+        String query = "SELECT * FROM nhan_vien WHERE ten_dang_nhap = ? AND mat_khau = ? AND trang_thai = 1";
+        try (PreparedStatement ps = cn.prepareStatement(query)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                NhanVien nhanVien = NhanVien.getBuilder()
+                        .withTrangThai(rs.getInt(1))
+                        .withId(rs.getLong(2))
+                        .withMaNV(rs.getString(3))
+                        .withMatKhau(rs.getString(4))
+                        .withTen(rs.getString(5))
+                        .withTenDangNhap(rs.getString(6))
+                        .build();
+
+                return nhanVien;
+            }
+        } catch (SQLException ex) {
+            throw new SQLException();
+        }
+
+        return null;
+    }
 }

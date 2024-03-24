@@ -13,6 +13,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -30,7 +31,6 @@ import java.util.*;
         "/hoa-don/update",
 })
 public class HoaDonController extends HttpServlet {
-
 
     private HoaDonService service;
     private HoaDonResponseService serviceResponse;
@@ -61,6 +61,10 @@ public class HoaDonController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            if (req.getSession(false).getAttribute("account") == null){
+                resp.sendRedirect("/assignment_war_exploded/login");
+                return;
+            }
             String uri = req.getRequestURI();
             if (uri.contains("create")) {
                 this.create(req, resp);
@@ -83,6 +87,10 @@ public class HoaDonController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            if (req.getSession(false).getAttribute("account") == null){
+                resp.sendRedirect("/assignment_war_exploded/login");
+                return;
+            }
             String uri = req.getRequestURI();
             if (uri.contains("update")) {
                 this.update(req, resp);
